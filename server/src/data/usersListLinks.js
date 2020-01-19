@@ -78,6 +78,12 @@ const linksUser = {
                         link: '/:id/settings/theme',
                         child: []
                     },
+                    {
+                        name: 'widgets',
+                        title: 'виджеты',
+                        link: '/:id/settings/widgets',
+                        child: []
+                    },
                 ]
         },
     ],

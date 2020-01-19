@@ -21,6 +21,7 @@ import newTest from '@/components/testings/newTest/newTest'
 //НАстройки
 //Настройки темы
 import settingsTheme from "../components/authRouter/settings/settings-theme/settingsTheme";
+import settingsWidgets from "../components/authRouter/settings/settings-widgets/settingsWidget";
 
 Vue.use(Router)
 
@@ -59,6 +60,7 @@ export default new Router({
     {path: `/:id/testings/newTest`, name: 'newTest', component: newTest},
     {path: '/:id/storageFile', name: 'fileStorage', component: fileStorage},
     {path: '/:id/support', name: 'support', component: TechnicalSupport},
-    {path: '/:id/settings/theme', name: 'settingsTheme', component: settingsTheme}
+    {path: '/:id/settings/theme', name: 'settingsTheme', component: settingsTheme},
+    {path: '/:id/settings/widgets', name: 'settingsWidgets', component: settingsWidgets},
   ]
 })

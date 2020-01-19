@@ -657,6 +657,107 @@ app.post('/testings/new/test', (req, res) => {
 ///////////////////////////////////////////////////////////
 
 
+/***********************************************************
+ *   АДРЕСА РАБОТЫ ВИДЖЕТОВ
+ ***********************************************************/
+
+
+// все доступные виджеты по ролям
+const allWidget = [
+    {
+        id: 1, // идентификатор виджета
+        name: 'Тесты', // название виджета
+        roleWidget: ['пользователь', 'администратор', 'технолог'] // массив ролей, по которым будет доступен данный виджет
+    },
+    {
+        id: 2, // идентификатор виджета
+        name: 'Нововедения', // название виджета
+        roleWidget: ['пользователь', 'администратор', 'технолог'] // массив ролей, по которым будет доступен данный виджет
+    },
+    {
+        id: 3, // идентификатор виджета
+        name: 'Новые пользователи', // название виджета
+        roleWidget: ['администратор'] // массив ролей, по которым будет доступен данный виджет
+    },
+    {
+        id: 4, // идентификатор виджета
+        name: 'Документация', // название виджета
+        roleWidget: ['администратор', 'технолог'] // массив ролей, по которым будет доступен данный виджет
+    },
+];
+
+// тестовый объект активных виджетов по ролям
+const activeWidgetsRole = [
+    {
+        role: 'пользователь', //роль
+        activeWidget: [
+            {
+                id: 1, // идентификатор виджета
+                full: false // размер
+            },
+        ], // активные виджеты и их настройки
+    },
+    {role: 'администратор', activeWidget: [
+            {
+                id: 3, // идентификатор виджета
+                full: false // размер
+            },
+            {
+                id: 4, // идентификатор виджета
+                full: false // размер
+            },
+            {
+                id: 1, // идентификатор виджета
+                full: true // размер
+            },
+            {
+                id: 2, // идентификатор виджета
+                full: true // размер
+            },
+        ]},
+    {role: 'технолог', activeWidget: []},
+]
+
+// все доступные роли
+const allRoles = ['пользователь', 'администратор', 'технолог']
+
+//ЗАХОД НА СТРАНИЦУ ВИДЖЕТОВ (НАСТРОЙКА)
+app.get('/widgets', (req, res) => {
+    res.send({
+        allRoles: allRoles // отправка всех ролей доступных
+    })
+});
+
+// ЗАПРОС НА СПИСОК WIDGET ПО РОЛИ
+app.get('/widgets/role', (req, res) => {
+    // принимаем какая роль нужна и отправляем клиенту все доступные виджеты по данной роли
+    const roleInWidgets = allWidget.slice().filter(el => el.roleWidget.includes(req.query.role));
+    const roleActiveWidgets = activeWidgetsRole.find(el => el.role === req.query.role).activeWidget;
+    res.send({allWidgetsInRole: roleInWidgets, activeWidgetsId: roleActiveWidgets})
+});
+
+// ЗАПРОС НА ДОБАВЛЕНИЕ НОВОГО ВИДЖЕТА ПО РОЛИ
+app.post('/widgets/active/add', (req,res) => {
+    activeWidgetsRole.find(el => el.role === req.body.role).activeWidget.push({id:req.body.id, full: req.body.full });
+    const roleInWidgets = allWidget.slice().filter(el => el.roleWidget.includes(req.body.role));
+    const roleActiveWidgets = activeWidgetsRole.find(el => el.role === req.body.role).activeWidget;
+    res.send({allWidgetsInRole: roleInWidgets, activeWidgetsId: roleActiveWidgets})
+});
+
+app.get('/widgets/active/delete', (req,res) => {
+    activeWidgetsRole.find(el => el.role === req.query.role).activeWidget.forEach((el, i ,arr) => {
+        Number(el.id) === Number(req.query.id) ? arr.splice(i, 1) : ''
+    });
+    const roleInWidgets = allWidget.slice().filter(el => el.roleWidget.includes(req.query.role));
+    const roleActiveWidgets = activeWidgetsRole.find(el => el.role === req.query.role).activeWidget;
+    res.send({allWidgetsInRole: roleInWidgets, activeWidgetsId: roleActiveWidgets})
+})
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 app.listen(config.port, () => {
     console.log(`server start in port ${config.port}`)
 })

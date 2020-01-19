@@ -17,6 +17,7 @@ import currentPageData              from './modules/currentPageData'
 import search                       from './modules/search'
 import filterActive                 from './modules/filters'
 import testings                     from './modules/testings'
+import widgets                      from './modules/widgets'
 
 
 Vue.use(Vuex);
@@ -44,7 +45,7 @@ export const store = new Vuex.Store({
     currentPageData,
     search,
     filterActive,
-    testings
-
+    testings,
+    widgets
   }
 });
