@@ -1,12 +1,9 @@
 <template>
   <div class="classifiers">
-    <div class="classifiers-header">
-      <span>Классификаторы</span>
-    </div>
     <div class="classifiers-body">
       <div class="classifiers-body-group">
         <div class="classifiers-body-group__search">
-          <input type="text" v-model="searchClassifiers">
+          <search @search="searchParent"/>
         </div>
         <classifiers-group
           :data-classifiers="classifiers"
@@ -19,10 +16,11 @@
 
 <script>
     import ClassifiersGroup from "./group/classifiersGroup";
+    import Search from "../../../search/search";
 
     export default {
         name: "classifiers",
-        components: {ClassifiersGroup},
+        components: {Search, ClassifiersGroup},
         computed: {
             get_classifiers() {
                 return this.$store.getters.get_classifiers
@@ -64,6 +62,15 @@
                 searchClassifiers: ''
             }
         },
+      methods: {
+        /**
+         * обработка ввода символов ( поиск )
+         * @param data
+         */
+        searchParent(data) {
+          this.searchClassifiers = data.search;
+        }
+      }
     }
 </script>
 
@@ -71,9 +78,6 @@
   .classifiers {
     width: 100%;
     height: 100%;
-    background: #FFFFFF;
-    box-shadow: 0 10px 30px rgba(209, 213, 223, 0.5);
-    border-radius: 4px;
     display: flex;
     flex-direction: column;
 

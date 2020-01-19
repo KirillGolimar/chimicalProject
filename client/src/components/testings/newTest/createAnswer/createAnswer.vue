@@ -1,21 +1,22 @@
 <template>
   <div class="create-answer">
-    <div class="create-answer__header">
-      <span>Варианты ответов</span>
-    </div>
     <div class="create-answer__body">
       <div class="create-answer__body-all">
         <div class="create-answer__body-all__item" v-for="(answer, i ,arr) in get_answer">
-          <span>{{ answer.description }}</span>
-          <span @click="deleteAnswer(answer.id)">---</span>
+          <div><span>{{ answer.description }}</span></div>
+          <div><span @click="deleteAnswer(answer.id)"><icon__delete /></span></div>
         </div>
       </div>
       <div class="create-answer__body-new">
-        <span @click="newAnswer">создать новый вариант ответа</span>
+        <div class="create-answer__body-new__action">
+          <span @click="newAnswer">создать новый вариант ответа</span>
+        </div>
         <div class="create-answer__body-new__form" v-if="newAnswerFlag">
           <span>введите описание варианта ответа</span>
           <input type="text" v-model="dataAnswerNew">
-          <span @click="saveNewAnswwer">сохранить</span>
+          <div>
+            <span @click="saveNewAnswwer">сохранить</span>
+          </div>
         </div>
       </div>
     </div>
@@ -23,9 +24,11 @@
 </template>
 
 <script>
+    import Icon__delete from "../../../icon/iconDelete";
     export default {
         name: "createAnswer",
-        data() {
+      components: {Icon__delete},
+      data() {
             return {
                 newAnswerFlag: false,
                 dataAnswerNew: ''
@@ -71,9 +74,6 @@
   .create-answer {
     width: 100%;
     height: 100%;
-    background: #FFFFFF;
-    box-shadow: 0 10px 30px rgba(209, 213, 223, 0.5);
-    border-radius: 4px;
     display: flex;
     flex-direction: column;
 
@@ -96,15 +96,68 @@
       width: 100%;
       height: 100%;
       display: flex;
+      flex-direction: column;
 
       &-all {
-        width: 70%;
+        width: 100%;
         height: 100%;
+        margin-bottom: 15px;
+        &__item {
+          display: flex;
+          min-height: 35px;
+          > div:first-child {
+            width: 50%;
+            max-width: 350px;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+          }
+          > div:last-child {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            cursor: pointer;
+          }
+        }
       }
 
       &-new {
-        width: 30%;
+        width: 100%;
         height: 100%;
+        &__action {
+          padding: 0 7px;
+          max-width: 350px;
+          height: 32px;
+          border: 1px solid gray;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          cursor: pointer;
+        }
+        &__form {
+          width: 100%;
+          margin-top: 12px;
+          > input {
+            height: 32px;
+            padding: 0 6px;
+            color: #1e1e1e;
+            border-bottom: 1px solid #808080;
+            &:active, &:focus, &:hover {
+              border-bottom: 1px solid #808080;
+              outline: none;
+            }
+          }
+          > div {
+            width: 200px;
+            height: 32px;
+            border: 1px solid gray;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            margin-top: 7px;
+          }
+        }
       }
     }
   }

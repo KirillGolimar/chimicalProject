@@ -21,14 +21,16 @@
           </svg>
         </div>
         <div class="classifiers-group__overflow-title-name">
-          <span>{{ i }}</span>
-          <span @click="deleteGroupClassifiers(i)">---</span>
+          <div><span>{{ i }}</span></div>
+          <div @click="deleteGroupClassifiers(i)"><icon__delete /></div>
         </div>
       </div>
       <transition name="groupElClassifiers">
         <div class="classifiers-group__overflow-body"
              v-if="i === activeGroup">
-          <span @click="addNewClassifiers()">+++создать новый классификатор++++</span>
+          <div class="classifiers-group__overflow-body-new button-new">
+            <span @click="addNewClassifiers()">создать новый классификатор</span>
+          </div>
           <div v-if="newClassifiers.flag">
             <input type="text" v-model="newClassifiers.title">
             <span @click="addNewClassifiersSave()">добавить +++</span>
@@ -39,8 +41,12 @@
                :key="grI"
                :style="{background: elGroup.id === activeElId ? '#8080802b' : ''}"
                @click="activeElIDGroup(elGroup.id)">
-            <span>{{ elGroup.name}}</span>
-            <span @click="deleteClassifiers(elGroup.id)">---</span>
+            <div>
+              <span>{{ elGroup.name}}</span>
+            </div>
+            <div>
+              <span @click="deleteClassifiers(elGroup.id)"><icon__delete /></span>
+            </div>
           </div>
           <div v-if=" group.length === 0">
             <span>пока что ничего нет</span>
@@ -50,7 +56,9 @@
     </div>
     <span v-if="Object.keys(dataClassifiers).length === 0">ничего не найдено</span>
     <div class="classifiers-group__add">
-      <span @click="addNewClassifiersGroup()">создать новую группу классификаторов +</span>
+      <div class="classifiers-group__add-new button-new">
+        <span @click="addNewClassifiersGroup()">создать новую группу классификаторов</span>
+      </div>
       <div class="classifiers-group__add-form"
            v-if="newClassifiersGroup.flag">
         <input type="text" v-model="newClassifiersGroup.title">
@@ -61,8 +69,10 @@
 </template>
 
 <script>
+  import Icon__delete from "../../../../icon/iconDelete";
   export default {
     name: "classifiersGroup",
+    components: {Icon__delete},
     props: {
       // сортированный объект классификаторов по группам
       dataClassifiers: {
@@ -119,7 +129,10 @@
        * метод удаления группы классификаторов
        */
       deleteGroupClassifiers(i) {
-        this.$store.dispatch('DELETE_сlassifiersGroup', i);
+        let deleteActive = confirm('вы уверены что хотите удать группу классификаторов, при удалении все классификаторы перейдут в блок другое')
+        if(deleteActive) {
+          this.$store.dispatch('DELETE_сlassifiersGroup', i);
+        }
       },
 
       ///////////////////// работа непосредственно с классифйиктаорами
@@ -170,6 +183,7 @@
     justify-content: flex-start;
     align-items: flex-start;
     flex-direction: column;
+    margin-top: 15px;
 
     &__overflow {
       width: 100%;
@@ -199,12 +213,18 @@
         }
 
         &-name {
-          width: 125px;
+          width: 150px;
           height: 100%;
           display: flex;
           justify-content: flex-start;
           align-items: center;
           padding-left: 15px;
+          > div:first-child {
+            width: 85%;
+          }
+          > div:last-child {
+            width: 15%;
+          }
         }
       }
 
@@ -219,6 +239,43 @@
           display: flex;
           justify-content: flex-start;
           align-items: center;
+          > div:first-child {
+            width: 80%;
+            max-width: 450px;
+          }
+          > div:last-child {
+
+          }
+        }
+      }
+    }
+    .button-new {
+      max-width: 400px;
+      padding: 0 7px;
+      height: 32px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 1px solid lightgray;
+      cursor: pointer;
+      > span {
+
+      }
+    }
+
+    &__add {
+      margin-top: 15px;
+      &-form {
+        > input {
+          height: 35px;
+          border-bottom: 1px solid #BEBEBE;
+          color: #1e1e1e;
+          padding: 0 7px;
+          &:hover,&:active,&:focus {
+            border-bottom: 1px solid #BEBEBE;
+            outline: none;
+
+          }
         }
       }
     }

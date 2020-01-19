@@ -2,7 +2,7 @@
     <div id="newTest">
       <div class="newTest">
         <div class="newTest__header">
-          <span>СОЗДАТЬ НОВЫЙ ТЕСТ   RFrjrjr</span>
+          <span>СОЗДАТЬ НОВЫЙ ТЕСТ</span>
         </div>
         <div class="newTest__body">
           <testings />
@@ -41,6 +41,11 @@
           letter-spacing: 0.02em;
 
         }
+      }
+      &__body {
+        width: 100%;
+        height: 100%;
+        padding: 15px 12px ;
       }
     }
   }

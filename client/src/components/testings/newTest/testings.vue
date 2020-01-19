@@ -37,10 +37,10 @@
         data() {
             return {
                 testFlag: {
-                    newTest: true,
+                    newTest: false,
                     createQuestion: false,
                     createAnswer: false,
-                    classifiers: false
+                    classifiers: true
                 }
             }
         },
@@ -80,6 +80,7 @@
     &_header {
       width: 100%;
       height: 10%;
+      margin-bottom: 10px;
       display: flex;
       flex-wrap: nowrap;
       justify-content: flex-start;
@@ -106,6 +107,10 @@
     &_body {
       width: 100%;
       height: 90%;
+      background: #FFFFFF;
+      box-shadow: 0 10px 30px rgba(209, 213, 223, 0.5);
+      border-radius: 4px;
+      padding: 5px 15px;
     }
   }
 </style>

@@ -354,9 +354,6 @@
   .create-question {
     width: 100%;
     height: 100%;
-    background: #FFFFFF;
-    box-shadow: 0 10px 30px rgba(209, 213, 223, 0.5);
-    border-radius: 4px;
     display: flex;
     flex-direction: column;
 
