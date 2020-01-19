@@ -2,7 +2,7 @@
     <div id="newTest">
       <div class="newTest">
         <div class="newTest__header">
-          <span>СОЗДАТЬ НОВЫЙ ТЕСТ</span>
+          <span>СОЗДАТЬ НОВЫЙ ТЕСТ   </span>
         </div>
         <div class="newTest__body">
           <testings />
