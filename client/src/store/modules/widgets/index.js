@@ -98,14 +98,37 @@ const actions = {
       })
       .catch(err=> console.log(err))
   },
+  /**
+   * метод изменения размеров виджетов
+   * @param state
+   * @param data
+   * @returns {Promise<void>}
+   */
   edit__widgetActive:  async (state, data) => {
-    await Axios.get(`http://localhost:8081/widgets/active/edit?role=${data.role}&id=${data.id}&params=${data.params}`)
+    await Axios.post(`http://localhost:8081/widgets/active/edit`, data)
       .then(res=> {
         if(res.data.activeWidgetsId && res.data.allWidgetsInRole) {
           state.commit('set__widgets', res.data)
         }
       })
       .catch(err=> console.log(err))
+  },
+  /**
+   * метод изменения порядка виджетов
+   * @param state
+   * @param data
+   * @returns {Promise<void>}
+   */
+  reordering__widgetActive: async (state, data) => {
+    if(JSON.stringify(data.widgets) !== JSON.stringify(state.getters.get__widgets.activeWidgetsId)) {
+        await Axios.post('http://localhost:8081/widgets/active/reordering', data)
+          .then(res=> {
+            if(res.data.activeWidgetsId && res.data.allWidgetsInRole) {
+              state.commit('set__widgets', res.data)
+            }
+          })
+          .catch(err=> console.log(err))
+    }
   }
 };
 

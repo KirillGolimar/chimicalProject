@@ -655,13 +655,13 @@ app.post('/testings/new/test', (req, res) => {
 
 
 ///////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////
 
 
 /***********************************************************
  *   АДРЕСА РАБОТЫ ВИДЖЕТОВ
  ***********************************************************/
-
-
 // все доступные виджеты по ролям
 const allWidget = [
     {
@@ -751,7 +751,29 @@ app.get('/widgets/active/delete', (req,res) => {
     const roleInWidgets = allWidget.slice().filter(el => el.roleWidget.includes(req.query.role));
     const roleActiveWidgets = activeWidgetsRole.find(el => el.role === req.query.role).activeWidget;
     res.send({allWidgetsInRole: roleInWidgets, activeWidgetsId: roleActiveWidgets})
-})
+});
+
+/**
+ * метод изменения размера виджета
+ */
+app.post('/widgets/active/edit', (req,res) => {
+    activeWidgetsRole.find(el => el.role === req.body.role).activeWidget.forEach((el, i ,arr) => {
+        Number(el.id) === Number(req.body.id) ? el.full = req.body.full : ''
+    });
+    const roleInWidgets = allWidget.slice().filter(el => el.roleWidget.includes(req.body.role));
+    const roleActiveWidgets = activeWidgetsRole.find(el => el.role === req.body.role).activeWidget;
+    res.send({allWidgetsInRole: roleInWidgets, activeWidgetsId: roleActiveWidgets})
+});
+
+/**
+ * обработка изменения позиций активный виджетов у выбранной роли
+ */
+app.post('/widgets/active/reordering', (req,res) => {
+    activeWidgetsRole.find(el => el.role === req.body.role).activeWidget = req.body.widgets;
+    const roleInWidgets = allWidget.slice().filter(el => el.roleWidget.includes(req.body.role));
+    const roleActiveWidgets = activeWidgetsRole.find(el => el.role === req.body.role).activeWidget;
+    res.send({allWidgetsInRole: roleInWidgets, activeWidgetsId: roleActiveWidgets})
+});
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////

@@ -23,11 +23,24 @@
           @saveActions="saveActionsParent"/>
       </div>
       <div class="settings-widget__body-widgets">
-        <widget-container
-          v-for="widget in listActiveWidget"
-          :full="widget.full"
-          :id-widget="widget.id"
-          @actions="actionsWidget"/>
+        <draggable class="settings-widget__body-widgets-draggable"
+                   v-if="activeWidgetList && activeWidgetList.length > 0"
+                   v-model="activeWidgetList"
+                   v-bind="dragOptions"
+                   @start="drag = true"
+                   @end="drag = false">
+          <transition-group type="transition" :name="!drag ? 'flip-list' : null">
+            <widget-container
+              v-for="widget in activeWidgetList"
+              :full="widget.full"
+              :id-widget="widget.id"
+              :key="widget.id + activeRole"
+              @actions="actionsWidget"/>
+          </transition-group>
+        </draggable>
+        <div class="settings-widget__body-widgets-none" v-if="activeRole !== '' && ( activeWidgetList === null || activeWidgetList.length === 0 )">
+          <span>У данной роли еще нет назначенных виджетов</span>
+        </div>
       </div>
     </div>
   </div>
@@ -38,11 +51,20 @@
   import WidgetContainer from "./widgetContainer/widgetContainer";
   import List from "../../../mainComponent/list/list";
   import SelectionButton from "../../../mainComponent/selectionButton/selectionButton";
+  import draggable from "vuedraggable"
 
   export default {
     name: "settingsWidget",
-    components: {SelectionButton, List, WidgetContainer},
+    components: {SelectionButton, List, WidgetContainer, draggable},
     computed: {
+      dragOptions() {
+        return {
+          animation: 200,
+          group: "description",
+          disabled: false,
+          ghostClass: "ghost"
+        };
+      },
       // возврат списка ролей
       listUsers() {
         return this.$store.getters.get__allRoles
@@ -60,20 +82,33 @@
       // возврат активных виджетов
       listActiveWidget() {
         return this.$store.getters.get__widgets.activeWidgetsId
-      }
+      },
     },
     data() {
       return {
         activeRole: '', // активная роль ( для настйроки )
-        activeWidgetInServer: null
+        activeWidgetInServer: null,
+        activeWidgetList: null,
+        drag: false
       }
     },
     watch: {
+      listActiveWidget(data) {
+          this.activeWidgetList = data
+      },
       /**
        * как только меняеться выбранная роль, отправляю запрос на получение всех доступных виджетов и всех активных виджетов по данной роли ( с хранилища )
        */
       activeRole(data) {
         this.$store.dispatch('init__constructorWidget', {role: data})
+      },
+        /**
+         * отлавливаю изменения когда поменял порядок
+         */
+      activeWidgetList(data) {
+          if(JSON.stringify(data) !== JSON.stringify(this.listActiveWidget)) {
+              this.$store.dispatch('reordering__widgetActive', {role:this.activeRole, widgets: this.activeWidgetList})
+          }
       }
     },
     methods: {
@@ -113,7 +148,13 @@
             this.$store.dispatch('delete__widgetActive', {role: this.activeRole, id: data.id});
             break;
           case 'settings':
-            console.log('какие могут быть настйроки по изменению виджетов ? ') //:TODO нужно подумать хорошенко и поделать))
+              // объект для отправки ( уже измененый размер отправляеться )
+              let options = {
+                role: this.activeRole,
+                id: data.id,
+                full : !this.listActiveWidget.find(el => el.id === data.id).full
+              };
+            this.$store.dispatch('edit__widgetActive', options);
             break;
         }
 
@@ -130,6 +171,19 @@
   .settings-widget {
     width: 100%;
     height: 300px;
+
+    .ghost {
+      position: relative;
+      &::after {
+        position: absolute;
+        top: 0;
+        left: 0;
+        content: '';
+        width: 100%;
+        height: 100%;
+        border: 2px dashed #c400ff4a;
+      }
+    }
 
     &__title {
       width: 100%;
@@ -156,6 +210,12 @@
         width: 250px;
         height: 50px;
       }
+      &-widget {
+        width: 100%;
+        > .list {
+          width: 250px;
+        }
+      }
 
       &-widgets {
         width: 100%;
@@ -163,6 +223,27 @@
         display: flex;
         flex-wrap: wrap;
         box-sizing: border-box;
+        &-draggable {
+          width: 100%;
+          display: flex;
+          flex-wrap: wrap;
+          > span {
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+          }
+        }
+        &-none {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 100%;
+          height: 100%;
+          > span {
+            font-size: 16px;
+            color: #1e1e1e;
+          }
+        }
       }
     }
   }

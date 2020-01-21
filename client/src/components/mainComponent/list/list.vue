@@ -1,66 +1,66 @@
 <template>
   <div class="list">
-    <div class="list-title" @click="activeFlag()">
-      <span>{{ label }}</span>
-      <svg :style="{transform: flagList ? 'rotate(180deg)' : ''}" width="24" height="24" viewBox="0 0 24 24" fill="none"
+    <div class="list-title list-dropDown" @click="activeFlag()">
+      <span class="list-dropDown">{{ label }}</span>
+      <svg class="list-dropDown" :style="{transform: flagList ? 'rotate(180deg)' : ''}" width="24" height="24" viewBox="0 0 24 24" fill="none"
            xmlns="http://www.w3.org/2000/svg">
         <path d="M7 10L12 15L17 10H7Z" fill="#979797"/>
       </svg>
     </div>
-    <div class="list-body" v-if="flagList">
-      <div class="list-body__search"
+    <div class="list-body list-dropDown" v-if="flagList">
+      <div class="list-body__search list-dropDown"
            v-if="search">
-        <div class="title-search">
-          <span>Поиск</span>
+        <div class="title-search list-dropDown">
+          <span class="list-dropDown">Поиск</span>
         </div>
-        <div class="search-form">
-          <input type="text" v-model="searchList">
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <div class="search-form list-dropDown">
+          <input type="text" v-model="searchList" class="list-dropDown">
+          <svg class="list-dropDown" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path fill-rule="evenodd" clip-rule="evenodd"
                   d="M11.9649 11.2559H12.7549L17.7449 16.2559L16.2549 17.7459L11.2549 12.7559V11.9659L10.9849 11.6859C9.84488 12.6659 8.36488 13.2559 6.75488 13.2559C3.16488 13.2559 0.254883 10.3459 0.254883 6.75586C0.254883 3.16586 3.16488 0.255859 6.75488 0.255859C10.3449 0.255859 13.2549 3.16586 13.2549 6.75586C13.2549 8.36586 12.6649 9.84586 11.6849 10.9859L11.9649 11.2559ZM2.25488 6.75586C2.25488 9.24586 4.26488 11.2559 6.75488 11.2559C9.24488 11.2559 11.2549 9.24586 11.2549 6.75586C11.2549 4.26586 9.24488 2.25586 6.75488 2.25586C4.26488 2.25586 2.25488 4.26586 2.25488 6.75586Z"
                   fill="#70889E"/>
           </svg>
         </div>
       </div>
-      <div class="list-body__empty" v-if="searchData.length === 0 || Object.keys(searchData).length === 0">
+      <div class="list-body__empty list-dropDown" v-if="searchData.length === 0 || Object.keys(searchData).length === 0">
         <span>по вашему запросу ничего не найдено</span>
       </div>
-      <div class="list-body__el"
+      <div class="list-body__el list-dropDown"
            v-else
            v-for="(elObject, i ) in searchData"
            :key="i">
-        <div class="list-body__el-arr" v-if="Array.isArray(dataList)" @click="choiceEl(elObject)">
-          <div class="list-body__el-arr-check el-checked" v-if="listMulti">
+        <div class="list-body__el-arr list-dropDown" v-if="Array.isArray(dataList)" @click="choiceEl(elObject)">
+          <div class="list-body__el-arr-check el-checked list-dropDown" v-if="listMulti">
             <svg v-if="choiceElementList.includes(elObject)" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M9 16.2188L19.5938 5.57812L21 6.98438L9 18.9844L3.42188 13.4062L4.78125 12L9 16.2188Z" fill="red"/>
             </svg>
           </div>
-          <div class="list-body__el-arr-info">
+          <div class="list-body__el-arr-info list-dropDown">
             <span>{{ nameField!=='' || elObject[nameField] !== undefined ? elObject[nameField] : elObject }}</span>
           </div>
         </div>
-        <div class="list-body__el-obj" v-if="!Array.isArray(dataList) && typeof dataList === 'object'">
-          <div class="list-body__el-obj-title">
-            <span>{{ i }}</span>
+        <div class="list-body__el-obj list-dropDown" v-if="!Array.isArray(dataList) && typeof dataList === 'object'">
+          <div class="list-body__el-obj-title list-dropDown">
+            <span class="list-dropDown">{{ i }}</span>
           </div>
-          <div class="list-body__el-obj-body">
-            <div class="list-body__el-obj-body-el"
+          <div class="list-body__el-obj-body list-dropDown">
+            <div class="list-body__el-obj-body-el list-dropDown"
                  v-for="(el, i) in elObject"
                  :key="i" @click="choiceEl(el)">
-              <div class="list-body__el-obj-body-el-check el-checked" v-if="listMulti">
-                <svg v-if="choiceElementList.includes(el)" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <div class="list-body__el-obj-body-el-check el-checked list-dropDown" v-if="listMulti">
+                <svg class="list-dropDown" v-if="choiceElementList.includes(el)" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M9 16.2188L19.5938 5.57812L21 6.98438L9 18.9844L3.42188 13.4062L4.78125 12L9 16.2188Z" fill="red"/>
                 </svg>
               </div>
-              <div class="list-body__el-obj-body-el-info">
-                <span>{{ el }}</span>
+              <div class="list-body__el-obj-body-el-info list-dropDown">
+                <span class="list-dropDown">{{ el }}</span>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="list-body__save" v-if="listMulti" @click="saveParent()">
-        <span>Добавить</span>
+      <div class="list-body__save list-dropDown list-dropDown" v-if="listMulti" @click="saveParent()">
+        <span class="list-dropDown">Добавить</span>
       </div>
     </div>
   </div>
@@ -138,6 +138,15 @@
                 choiceElementList: []
             }
         },
+        watch: {
+          flagList(data) {
+              if(data) {
+                  document.addEventListener('click', this.closeList, false)
+              } else if(!data) {
+                  document.removeEventListener('click', this.closeList, false)
+              }
+          }
+        },
         methods: {
             // переключение скрыть / показать список
             activeFlag() {
@@ -170,6 +179,17 @@
                     }
                 }
             },
+
+            /**
+             * метод закрытия выпдвющего меню
+             * при клике на любую область
+             * вешаетсья на документ
+             */
+            closeList(event) {
+                if(!event.target.classList.contains('list-dropDown')) {
+                    this.flagList = false
+                }
+            }
 
         },
         mounted() {
@@ -319,6 +339,7 @@
         display: flex;
         margin-bottom: 5px;
         min-height: 32px;
+        cursor: pointer;
 
         > div {
           width: 100%;
@@ -332,8 +353,11 @@
           align-items: center;
 
           &-info {
-            width: calc(100% - 15px);
+            width: 100%;
             height: 100%;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
           }
 
           > .el-checked {
