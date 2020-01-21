@@ -3,6 +3,7 @@
       <div class="widget-container__title">
         <span>Название виджета - {{ idWidget }}</span>
       </div>
+      <slider-widget :data-slider="[1,2,3,4]" :test="sizeContainer"/>
       <div class="widget-container__icons" v-if="settings">
         <div class="widget-container__icons-settings" @click="actionsIocn('settings')">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -22,9 +23,10 @@
 <script>
 
     import WidgetTest from "../typeWidget/test/widgetTest";
+    import SliderWidget from "../typeWidget/sliderWidget/sliderWidget";
     export default {
         name: "widgetContainer",
-        components: {WidgetTest},
+        components: {SliderWidget, WidgetTest},
         props: {
             // полный размер 100%
             full : {
@@ -52,10 +54,10 @@
             actionsIocn(nameActions) {
                 switch (nameActions) {
                     case 'delete':
-                        this.$emit('actions', {id:this.idWidget, actions: 'delete'})
+                        this.$emit('actions', {id:this.idWidget, actions: 'delete'});
                         break;
                     case 'settings':
-                        this.$emit('actions', {id:this.idWidget, actions: 'settings'})
+                        this.$emit('actions', {id:this.idWidget, actions: 'settings'});
                         break;
                 }
             }
@@ -73,6 +75,10 @@
   box-sizing: border-box;
   position: relative;
   transition: .2s ease-in-out;
+  cursor: grab;
+  &:active {
+    cursor: grabbing;
+  }
   &__title {
     width: 100%;
     height: 32px;
