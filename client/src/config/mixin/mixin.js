@@ -4,6 +4,18 @@ const listLang = require('./../language/listlang');
 const configClient = require('./../client/client');
 
 const mixin = {
+  data() {
+    return {
+      // массив градиентов
+        gradient: [
+          'linear-gradient(270deg, #56CCF2 0%, #7F31F1 136.06%)',
+          'linear-gradient(270deg, #E31F28 0%, #843FA0 51.04%, #2574CF 100%',
+          'linear-gradient(270deg, #00ACED 0%, #2DA771 100%)',
+          'linear-gradient(270deg, #D4FAE4 0%, #2960A0 100%)',
+          'linear-gradient(270deg, #E31F28 0%, #843FA0 51.04%, #2574CF 100%)',
+        ]
+    }
+  },
   computed: {
     themeActiveComp() {
       if (this.$store.getters.get_activeThemeSwitcher.selectedTheme && this.$store.getters.get_activeThemeSwitcher.selectedTheme.active) {

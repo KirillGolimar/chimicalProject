@@ -658,31 +658,60 @@ app.post('/testings/new/test', (req, res) => {
 ///////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////
 
+//////////////// ТИПЫ ВИДЖЕТОВ
+// slider - виджет отображаеться как слайдер
+/*
+Для работы данного вджета данные должны быть вида (поля не обязательны, но желательны)
+[
+    {
+        title: '',
+        description:'',
+        img:'',
+    }
+
+]
+*/
+// cardInSlider - виджет отображаеться как слайдер с карточками
+/*
+* [
+*   {
+*       title:'', название карточки
+*       description :'', описание картчоки
+*       img: '', ссылка на фотку или пусто если дефолт
+*       link: '',  ссылка для перехода или вывода иныв по карточке
+*       modification: ''  какой то параметр модификации - например new ,
+*   }
+* ]
+*
+*
+* */
+// graphic - виджет отображаеться как граффик
+//
+
 
 /***********************************************************
  *   АДРЕСА РАБОТЫ ВИДЖЕТОВ
  ***********************************************************/
-// все доступные виджеты по ролям
 const allWidget = [
+
+// все доступные виджеты по ролям
     {
         id: 1, // идентификатор виджета
-        name: 'Тесты', // название виджета
+        type: 'cardInSlider', // тип виджета
+        name: 'мои тесты', // название виджета
         roleWidget: ['пользователь', 'администратор', 'технолог'] // массив ролей, по которым будет доступен данный виджет
     },
     {
         id: 2, // идентификатор виджета
+        type:'slider',
         name: 'Нововедения', // название виджета
         roleWidget: ['пользователь', 'администратор', 'технолог'] // массив ролей, по которым будет доступен данный виджет
     },
     {
         id: 3, // идентификатор виджета
+        type: 'cardInSlider',
         name: 'Новые пользователи', // название виджета
         roleWidget: ['администратор'] // массив ролей, по которым будет доступен данный виджет
-    },
-    {
-        id: 4, // идентификатор виджета
-        name: 'Документация', // название виджета
-        roleWidget: ['администратор', 'технолог'] // массив ролей, по которым будет доступен данный виджет
     },
 ];
 
@@ -690,36 +719,14 @@ const allWidget = [
 const activeWidgetsRole = [
     {
         role: 'пользователь', //роль
-        activeWidget: [
-            {
-                id: 1, // идентификатор виджета
-                full: false // размер
-            },
-        ], // активные виджеты и их настройки
+        activeWidget: [], // активные виджеты и их настройки
     },
-    {role: 'администратор', activeWidget: [
-            {
-                id: 3, // идентификатор виджета
-                full: false // размер
-            },
-            {
-                id: 4, // идентификатор виджета
-                full: false // размер
-            },
-            {
-                id: 1, // идентификатор виджета
-                full: true // размер
-            },
-            {
-                id: 2, // идентификатор виджета
-                full: true // размер
-            },
-        ]},
+    {role: 'администратор', activeWidget: []},
     {role: 'технолог', activeWidget: []},
-]
+];
 
 // все доступные роли
-const allRoles = ['пользователь', 'администратор', 'технолог']
+const allRoles = ['пользователь', 'администратор', 'технолог'];
 
 //ЗАХОД НА СТРАНИЦУ ВИДЖЕТОВ (НАСТРОЙКА)
 app.get('/widgets', (req, res) => {
@@ -736,9 +743,9 @@ app.get('/widgets/role', (req, res) => {
     res.send({allWidgetsInRole: roleInWidgets, activeWidgetsId: roleActiveWidgets})
 });
 
-// ЗАПРОС НА ДОБАВЛЕНИЕ НОВОГО ВИДЖЕТА ПО РОЛИ
+// ЗАПРОС НА ДОБАВЛЕНИЕ НОВОГО ВИДЖЕТА ПО РОЛИ (активного)
 app.post('/widgets/active/add', (req,res) => {
-    activeWidgetsRole.find(el => el.role === req.body.role).activeWidget.push({id:req.body.id, full: req.body.full });
+    activeWidgetsRole.find(el => el.role === req.body.role).activeWidget.push({id:req.body.id, full: req.body.full, type:allWidget.find(el => el.id === req.body.id).type  });
     const roleInWidgets = allWidget.slice().filter(el => el.roleWidget.includes(req.body.role));
     const roleActiveWidgets = activeWidgetsRole.find(el => el.role === req.body.role).activeWidget;
     res.send({allWidgetsInRole: roleInWidgets, activeWidgetsId: roleActiveWidgets})

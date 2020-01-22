@@ -34,8 +34,10 @@
               v-for="widget in activeWidgetList"
               :full="widget.full"
               :id-widget="widget.id"
+              settings
               :key="widget.id + activeRole"
-              @actions="actionsWidget"/>
+              :type-widget="widget.type"
+              @actions="actionsWidget" />
           </transition-group>
         </draggable>
         <div class="settings-widget__body-widgets-none" v-if="activeRole !== '' && ( activeWidgetList === null || activeWidgetList.length === 0 )">
@@ -52,10 +54,11 @@
   import List from "../../../mainComponent/list/list";
   import SelectionButton from "../../../mainComponent/selectionButton/selectionButton";
   import draggable from "vuedraggable"
+  import SliderWidget from "./typeWidget/sliderWidget/sliderWidget";
 
   export default {
     name: "settingsWidget",
-    components: {SelectionButton, List, WidgetContainer, draggable},
+    components: {SliderWidget, SelectionButton, List, WidgetContainer, draggable},
     computed: {
       dragOptions() {
         return {
