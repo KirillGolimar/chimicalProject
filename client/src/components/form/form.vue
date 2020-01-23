@@ -168,7 +168,7 @@
         z-index: 10;
         &:focus, &:active {
           border-bottom: 1px solid #3dc0ff;
-          outline: none;
+          /*outline: none;*/
         }
       }
 
