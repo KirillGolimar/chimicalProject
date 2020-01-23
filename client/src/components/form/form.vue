@@ -166,10 +166,10 @@
         border-bottom-width: 1px;
         padding: 5px 8px 8px 6px;
         z-index: 10;
-      }
-
-      > input:focus {
-        border-bottom: 1px solid #3dc0ff;
+        &:focus, &:active {
+          border-bottom: 1px solid #3dc0ff;
+          outline: none;
+        }
       }
 
       > input::placeholder {

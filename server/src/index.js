@@ -129,8 +129,8 @@ app.get('/:id/support', (req, res) => {
 });
 
 //****************++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ ТЕСТЫ
-app.get('/:id/testings/newTest' , (req,res) => {
-    require('./testing/construcotTest')('/:id/testings/newTest',req.query.login, req.query.pass, res)
+app.get('/:id/testings/newTest', (req, res) => {
+    require('./testing/construcotTest')('/:id/testings/newTest', req.query.login, req.query.pass, res)
 })
 
 
@@ -167,7 +167,7 @@ app.delete('/deleteUsers', (req, res) => {
 });
 
 app.get('/reset/paswword/all', (req, res) => {
-    require('./moduleAdminka/resetAllPasswordUsers')(poll, res,poll)
+    require('./moduleAdminka/resetAllPasswordUsers')(poll, res, poll)
 });
 
 app.get('/generation', (req, res) => {
@@ -393,7 +393,6 @@ app.get('/settings/theme/selectedTheme', (req, res) => {
     const newACtiveTheme = require('./settings/theme/newActiveTheme')
     newACtiveTheme(req.query.id, res)
 });
-
 
 
 /***********************************************************
@@ -653,7 +652,6 @@ app.post('/testings/new/test', (req, res) => {
 })
 
 
-
 ///////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////
@@ -703,7 +701,7 @@ const allWidget = [
     },
     {
         id: 2, // идентификатор виджета
-        type:'slider',
+        type: 'slider',
         name: 'Нововедения', // название виджета
         roleWidget: ['пользователь', 'администратор', 'технолог'] // массив ролей, по которым будет доступен данный виджет
     },
@@ -744,15 +742,19 @@ app.get('/widgets/role', (req, res) => {
 });
 
 // ЗАПРОС НА ДОБАВЛЕНИЕ НОВОГО ВИДЖЕТА ПО РОЛИ (активного)
-app.post('/widgets/active/add', (req,res) => {
-    activeWidgetsRole.find(el => el.role === req.body.role).activeWidget.push({id:req.body.id, full: req.body.full, type:allWidget.find(el => el.id === req.body.id).type  });
+app.post('/widgets/active/add', (req, res) => {
+    activeWidgetsRole.find(el => el.role === req.body.role).activeWidget.push({
+        id: req.body.id,
+        full: req.body.full,
+        type: allWidget.find(el => el.id === req.body.id).type
+    });
     const roleInWidgets = allWidget.slice().filter(el => el.roleWidget.includes(req.body.role));
     const roleActiveWidgets = activeWidgetsRole.find(el => el.role === req.body.role).activeWidget;
     res.send({allWidgetsInRole: roleInWidgets, activeWidgetsId: roleActiveWidgets})
 });
 
-app.get('/widgets/active/delete', (req,res) => {
-    activeWidgetsRole.find(el => el.role === req.query.role).activeWidget.forEach((el, i ,arr) => {
+app.get('/widgets/active/delete', (req, res) => {
+    activeWidgetsRole.find(el => el.role === req.query.role).activeWidget.forEach((el, i, arr) => {
         Number(el.id) === Number(req.query.id) ? arr.splice(i, 1) : ''
     });
     const roleInWidgets = allWidget.slice().filter(el => el.roleWidget.includes(req.query.role));
@@ -763,8 +765,8 @@ app.get('/widgets/active/delete', (req,res) => {
 /**
  * метод изменения размера виджета
  */
-app.post('/widgets/active/edit', (req,res) => {
-    activeWidgetsRole.find(el => el.role === req.body.role).activeWidget.forEach((el, i ,arr) => {
+app.post('/widgets/active/edit', (req, res) => {
+    activeWidgetsRole.find(el => el.role === req.body.role).activeWidget.forEach((el, i, arr) => {
         Number(el.id) === Number(req.body.id) ? el.full = req.body.full : ''
     });
     const roleInWidgets = allWidget.slice().filter(el => el.roleWidget.includes(req.body.role));
@@ -775,11 +777,26 @@ app.post('/widgets/active/edit', (req,res) => {
 /**
  * обработка изменения позиций активный виджетов у выбранной роли
  */
-app.post('/widgets/active/reordering', (req,res) => {
+app.post('/widgets/active/reordering', (req, res) => {
     activeWidgetsRole.find(el => el.role === req.body.role).activeWidget = req.body.widgets;
     const roleInWidgets = allWidget.slice().filter(el => el.roleWidget.includes(req.body.role));
     const roleActiveWidgets = activeWidgetsRole.find(el => el.role === req.body.role).activeWidget;
     res.send({allWidgetsInRole: roleInWidgets, activeWidgetsId: roleActiveWidgets})
+});
+
+
+app.get('/widgets/active/role', (req, res) => {
+    let activeWidgetsInRole = activeWidgetsRole.find(el=> el.role === req.query.role).activeWidget;
+    // тестовые данные по виджету
+    let testData = [
+        {title:'карточка 1 1 3211 1 321 32132 123 1321 321 32',description:'какое то описание 1 какое то описание 1 какое то описание 1 какое то описание 1 какое то описание 1 какое то описание 1',img:'123123', link:'asdasdasd', modification:'new'},
+        {title:'карточка 2',description:'какое то описание 2',img:'', link:'', modification:''},
+        {title:'карточка 3',description:'какое то описание 3',img:'', link:'', modification:''},
+        {title:'карточка 4',description:'какое то описание 4',img:'', link:'', modification:''},
+        {title:'карточка 5',description:'какое то описание 5',img:'', link:'', modification:''},
+    ]
+    activeWidgetsInRole.map(el => el['data'] = testData)
+    res.send({widgets: activeWidgetsInRole})
 });
 
 ////////////////////////////////////////////////////////////////////////////////////////////////

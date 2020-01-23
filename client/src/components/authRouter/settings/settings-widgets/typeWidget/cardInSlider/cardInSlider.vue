@@ -1,8 +1,11 @@
 <template>
     <div class="card-in-slider">
       <div class="card-in-slider__body" @mousedown="activeSlider=true" @mouseup="activeSlider=false">
-        <div class="card-in-slider__body-el" v-for="(el,i) in dataSlider" :style="styleEl">
+        <div class="card-in-slider__body-el" v-if="dataSlider.length > 0 && dataSlider" v-for="(el,i) in dataSlider" :style="styleEl">
             <card-mini :data-card="el"/>
+        </div>
+        <div class="card-in-slider__body-empty" v-if="dataSlider.length === 0 || !dataSlider">
+          <empty-content label="По вашему профилю, в данном виджите пока что нет иформации" type-resource="card"/>
         </div>
       </div>
     </div>
@@ -10,20 +13,15 @@
 
 <script>
     import CardMini from "../../../../../mainComponent/card/card-mini";
+    import EmptyContent from "../../../../../mainComponent/emptyContent/emptyContent";
     export default {
         name: "cardInSlider",
-        components: {CardMini},
+        components: {EmptyContent, CardMini},
         props: {
             // данные по слайдеру
             dataSlider: {
                 type: Array,
-                default: () => [
-                    {title:'карточка 1 1 3211 1 321 32132 123 1321 321 32',description:'какое то описание 1 какое то описание 1 какое то описание 1 какое то описание 1 какое то описание 1 какое то описание 1',img:'123123', link:'asdasdasd', modification:'new'},
-                    {title:'карточка 2',description:'какое то описание 2',img:'', link:'', modification:''},
-                    {title:'карточка 3',description:'какое то описание 3',img:'', link:'', modification:''},
-                    {title:'карточка 4',description:'какое то описание 4',img:'', link:'', modification:''},
-                    {title:'карточка 5',description:'какое то описание 5',img:'', link:'', modification:''},
-                ]
+                default: () => []
             },
             sizeCont: {
                 type: String,
@@ -54,7 +52,7 @@
 <style lang="less">
 .card-in-slider {
   width: 100%;
-  height: calc(100% - 32px);
+  height: calc(100% - 60px);
   position: relative;
   &__body {
     height: 100%;
@@ -71,6 +69,16 @@
       box-shadow: 0 10px 30px rgba(209, 213, 223, 0.5);
       border-radius: 4px;
       margin: 0 9px;
+    }
+    &-empty {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 0 10px;
+      box-sizing: border-box;
     }
   }
 }

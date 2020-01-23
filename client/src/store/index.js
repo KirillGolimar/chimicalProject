@@ -18,6 +18,7 @@ import search                       from './modules/search'
 import filterActive                 from './modules/filters'
 import testings                     from './modules/testings'
 import widgets                      from './modules/widgets'
+import home                         from './modules/home'
 
 
 Vue.use(Vuex);
@@ -46,6 +47,7 @@ export const store = new Vuex.Store({
     search,
     filterActive,
     testings,
-    widgets
+    widgets,
+    home
   }
 });

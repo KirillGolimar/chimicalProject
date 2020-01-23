@@ -1,6 +1,7 @@
 <template>
     <div class="slider-widget" @mousemove="displayNavigationButtons = false" @mouseleave="displayNavigationButtons = true">
-      <div class="slider-widget__workspace" :style="{width: sizeAllContainer + '%', marginLeft: - sliderOffsetStep * sliderActive + '%'}">
+      <div class="slider-widget__workspace" v-if="dataSlider && dataSlider.length > 0"
+           :style="{width: sizeAllContainer + '%', marginLeft: - sliderOffsetStep * sliderActive + '%'}">
           <div class="slider-widget__workspace-el"
                v-if="!numberElSlider"
                v-for="(el, i) in dataSlider"
@@ -28,7 +29,10 @@
             </div>
           </div>
       </div>
-      <div class="slider-widget__navigation">
+      <div class="slider-widget__empty" v-if="!dataSlider || dataSlider.length === 0">
+        <empty-content label="По вашему профилю, в данном виджите пока что нет иформации" type-resource="slider"/>
+      </div>
+      <div class="slider-widget__navigation" v-if="!numberElSlider && dataSlider && dataSlider.length > 0">
         <div class="slider-widget__navigation-next" :class="{'next-navigation' : displayNavigationButtons, 'next-navigation-reverse' : !displayNavigationButtons}" @click="sliderStep('next')">
           <arrow />
         </div>
@@ -41,9 +45,10 @@
 
 <script>
     import Arrow from "../../../../../icon/arrow";
+    import EmptyContent from "../../../../../mainComponent/emptyContent/emptyContent";
     export default {
         name: "sliderWidget",
-        components: {Arrow},
+        components: {EmptyContent, Arrow},
         computed: {
             // свойство по возврату градиента
           randomGradient() {
@@ -137,9 +142,17 @@
 <style lang="less">
 .slider-widget {
   width: 100%;
-  height: calc(100% - 32px);
+  height: calc(100% - 60px);
   overflow: hidden;
   position: relative;
+  &__empty {
+    min-width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
   &__workspace {
     min-width: 100%;
     height: 100%;
@@ -234,20 +247,44 @@
   }
 
   @keyframes next{
-    0%{top:calc(50% - 2em)}
-    100%{top:-100%}
+    0%{
+      top:calc(50% - 2em);
+      opacity: 1;
+    }
+    100%{
+      top:-100%;
+      opacity: 0;
+    }
   }
   @keyframes back{
-    0%{top:calc(50% - 2em)}
-    100%{top:100%}
+    0%{
+      top:calc(50% - 2em);
+      opacity: 1;
+    }
+    100%{
+      top:100%;
+      opacity: 0;
+    }
   }
   @keyframes nextReverse{
-    0%{top:-100%}
-    100%{top:calc(50% - 2em)}
+    0%{
+      top:-100%;
+      opacity: 0;
+    }
+    100%{
+      top:calc(50% - 2em);
+      opacity: 1;
+    }
   }
   @keyframes backReverse{
-    0%{top:100%}
-    100%{top:calc(50% - 2em)}
+    0%{
+      top:100%;
+      opacity: 0;
+    }
+    100%{
+      top:calc(50% - 2em);
+      opacity: 1;
+    }
   }
 
 

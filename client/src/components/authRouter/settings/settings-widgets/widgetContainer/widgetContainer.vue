@@ -1,7 +1,8 @@
 <template>
     <div class="widget-container" :style="sizeContainer">
       <div class="widget-container__title">
-        <span>Название виджета - {{ idWidget }}</span>
+        <span v-if="!settings">Название виджета - {{ idWidget }}</span>
+        <span v-if="settings">виджет - {{ typeWidget }}</span>
         <div class="widget-container__title__icons" v-if="settings">
           <div class="widget-container__title__icons-settings" @click="actionsIcon('settings')">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -16,9 +17,8 @@
           </div>
         </div>
       </div>
-      <slider-widget  :size-cont="sizeContainer.width"  v-if="typeWidget === 'slider'" :data-slider="[1,2,3,4]"/>
-      <card-in-slider :size-cont="sizeContainer.width" v-if="typeWidget === 'cardInSlider'"/>
-
+      <slider-widget  :size-cont="sizeContainer.width"  v-if="typeWidget === 'slider'" :data-slider="dataWidget"/>
+      <card-in-slider :size-cont="sizeContainer.width"  v-if="typeWidget === 'cardInSlider'" :data-slider="dataWidget"/>
     </div>
 </template>
 
@@ -54,13 +54,17 @@
             typeWidget: {
                 type: String,
                 default: ''
+            },
+            dataWidget: {
+                type: [Array, Object],
+                default: ()=> []
             }
         },
         computed: {
             // правило размеров виджетов
             sizeContainer() {
                 return {
-                    width: this.full ? `calc(100% - 2em)` : `calc(50% - 2em)`,
+                    width: this.full ? `calc(100% - 3em)` : `calc(50% - 3em)`,
                     cursor: this.settings ? 'grab' : 'default'
                 }
             },
@@ -86,10 +90,10 @@
   background: #FFFFFF;
   box-shadow: 0 10px 30px rgba(209, 213, 223, 0.5);
   border-radius: 4px;
-  margin: 1em;
   box-sizing: border-box;
   position: relative;
   transition: .2s ease-in-out;
+  margin: 1.5em;
   &__title {
     width: 100%;
     height: 60px;

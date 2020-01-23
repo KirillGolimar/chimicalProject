@@ -69,10 +69,12 @@
   import Support from "./components/authRouter/support/supportForm";
   import LoaderMessage from "./components/loader/loaderMessage/loaderMessage";
   import SettingsWidget from "./components/authRouter/settings/settings-widgets/settingsWidget";
+  import Home from "./components/authRouter/home/home";
 
   export default {
     name: 'App',
     components: {
+        Home,
         SettingsWidget,
       LoaderMessage,
       Support, DropdownMenu, App__authUsers, NavMenu, Cm__alert, Cm__header, Unauthorized, Loader, Slider
