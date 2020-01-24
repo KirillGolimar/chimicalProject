@@ -10,7 +10,7 @@ const state = {
    *
    */
   loader: false,
-  loaderMessage: false //флаг loader"а отправки сообщения
+  loaderMessage: false //флаг loaderFile"а отправки сообщения
 };
 const getters = {
   /**
