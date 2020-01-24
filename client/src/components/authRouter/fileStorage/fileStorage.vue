@@ -29,8 +29,7 @@
       />
     </div>
     <!--      тело файлового хранилища -->
-    <div
-      class="file-storage__body"
+    <div class="file-storage__body"
       @click="freeArea"
       :style="{justifyContent: !lengthArray ? `center` : 'flex-start' }"
     >
@@ -43,6 +42,7 @@
         @activeFiles="catchingActiveCard"
         @activeFolder="activeFolderChild"
         @rightMouseCard="rightVouseCard"
+        @fileOpen="fileOpenParent"
         :style="{
         background: activeFiles && activeFiles.key === i ? '#F5F5F5' : '',}"
       />
@@ -65,6 +65,11 @@
       />
     </div>
 
+    <modal-view
+      v-if="flagModalView"
+      @closeModalView="flagModalView = false"
+    />
+
   </div>
 </template>
 
@@ -84,6 +89,7 @@
     import ModalPropertiesFS from "./modalFileStorage/modalPropertiesFS";
     import FileCardNew from "./fileCard/fileCardNew";
     import FileCardNewSending from "./fileCard/fileCardNewSending";
+    import ModalView from "../../mainComponent/modal-view/modalView";
 
     /**
      * КОМПОНЕНТ ФАЙЛОВОГО ХРАНИЛИЩА
@@ -113,6 +119,7 @@
     export default {
         name: "fileStorage",
         components: {
+            ModalView,
             FileCardNewSending,
             FileCardNew,
             ModalPropertiesFS,
@@ -169,6 +176,8 @@
                 FSModalPropertiesData: null, //:TODO NEW
                 newFiles: [],
                 activeUrl: '',
+                flagModalView: false, // флаг модального окна просмотров
+                urlOpenFile: '' // поля дял записи файла который открываем
             }
         },
         watch: {
@@ -184,6 +193,11 @@
             }
         },
         methods: {
+            // отдаем от дочернего данные по файлу который нужно открыть
+            fileOpenParent(data) {
+                this.urlOpenFile = data; // записал адресм файла который открываем
+                this.flagModalView = true // открываю модалку
+            },
             /**
              * метод отлавливания , какая из карточек активная
              * @param data - активная карта ( по которой кликнули)
@@ -289,9 +303,9 @@
                     this.$store.getters.INFOUSER.userInfo.login,
                     this.$store.getters.INFOUSER.userInfo.pass,
                 );
-                if (res.status !== 200) console.log('ошибка')
+                if (res.status !== 200) console.log('ошибка');
                 if (res.data) {
-                    this.nestingArray.push(res.data.info) //добавил корневую папку хранилища
+                    this.nestingArray.push(res.data.info); //добавил корневую папку хранилища
                     this.$store.commit('SET_ALERTARRAY', {
                         status: res.data.status,
                         message: res.data.message,

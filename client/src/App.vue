@@ -70,10 +70,14 @@
   import LoaderMessage from "./components/loader/loaderMessage/loaderMessage";
   import SettingsWidget from "./components/authRouter/settings/settings-widgets/settingsWidget";
   import Home from "./components/authRouter/home/home";
+  import FileView from "./components/mainComponent/modal-view/fileView/fileView";
+  import FileStorage from "./components/authRouter/fileStorage/fileStorage";
 
   export default {
     name: 'App',
     components: {
+        FileStorage,
+        FileView,
         Home,
         SettingsWidget,
       LoaderMessage,
