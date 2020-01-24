@@ -54,7 +54,7 @@
                 dataFile.append('name', this.dataCard.name);
                 dataFile.append('file', this.dataCard);
                 dataFile.append('url', this.url);
-                const res = await addFiles.addFiles(dataFile, this.$store.getters.INFOUSER.id);
+                const res = await addFiles.addFiles(dataFile, '12');
                 this.flagLoaderButton = true;
                 let alert = {}; // объект для вывода ссобщения о выполнении запроса
                 if (res) {

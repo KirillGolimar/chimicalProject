@@ -67,6 +67,7 @@
 
     <modal-view
       v-if="flagModalView"
+      :url-file="urlOpenFile"
       @closeModalView="flagModalView = false"
     />
 
@@ -299,9 +300,7 @@
              */
             async getData() {
                 const res = await getFS.getFS(
-                    this.$store.getters.INFOUSER.id,
-                    this.$store.getters.INFOUSER.userInfo.login,
-                    this.$store.getters.INFOUSER.userInfo.pass,
+                    1,'admin','pass',
                 );
                 if (res.status !== 200) console.log('ошибка');
                 if (res.data) {

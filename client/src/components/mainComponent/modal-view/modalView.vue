@@ -1,5 +1,6 @@
 <template>
     <div class="modal-view" >
+      {{ sss }}
         <div class="modal-view__actions" @mouseenter="flagActions = true" @mouseleave="flagActions = false">
           <div class="actions-icon" v-if="!flagActions" >++</div>
           <div v-if="flagActions" class="modal-view__actions-close" @click="closeModalView">X</div>
@@ -11,6 +12,8 @@
 </template>
 
 <script>
+    const server = require('./../../../config/client/client').server;
+    import Axios from 'axios'
     export default {
         /**
          * компонент общий контайнер для просмотра файлов
@@ -20,6 +23,10 @@
             typeFile: {
                 type: String,
                 default: ''
+            },
+            urlFile: {
+                type: String,
+                default: ''
             }
         },
         data() {
@@ -27,9 +34,9 @@
                 flagActions: false
             }
         },
-        watch : {
-            flagActions(data) {
-                console.log(data)
+        computed: {
+          sss() {
+                return this.urlFile
             }
         },
         methods: {
@@ -37,6 +44,9 @@
             closeModalView() {
                 this.$emit('closeModalView')
             },
+        },
+        mounted() {
+            Axios.get(`${server}fileStorage/open?url=${this.urlFile}`).then(res=> console.log(res)).catch(err=> console.log(err))
         }
     }
 </script>

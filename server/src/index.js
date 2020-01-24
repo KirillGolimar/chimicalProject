@@ -3,7 +3,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const mysql = require('mysql2');
 const fileUlpoad = require('express-fileupload')
-
+const fs = require('fs');
 
 const config = require('./config/config');
 //:TODO ИМИТАЦИЯ БАЗЫ
@@ -210,10 +210,22 @@ app.post('/:id/fileStorage/addFiles', function (req, res) {
 /**
  * МЕТОД ОБРАБОТКИ ОТКРЫТИЯ ФАЙЛА С ХРАНИЛИЩА
  */
-app.get('/:id/fileStorage/open', function (req, res) {
-    const openFile = require('./fileStorage/openFile/openFile')
-    openFile(req.query.url, res)
+app.get('/fileStorage/open', function (req, res) {
+    console.log(req.query.url)
+    // const openFile = require('./fileStorage/openFile/openFile')
+    // openFile(req.query.url, res)
+    let stream = fs.createWriteStream(`C://Users/stoyan/Desktop/testtt/chimicalProject/server${req.query.url.substr(1)}`);
+    // console.log(`C://Users/stoyan/Desktop/testtt/chimicalProject/server${req.query.url.substr(1)}`)
+    // req.pipe(stream)
+    // stream.on('end', () => res.end())
+    // stream.on('error', (err) => console.log(err))
 })
+
+
+/**
+ * обработка отдачи статических файлов
+ */
+
 
 
 ///////////////////////////////////////////////////////////////////////// МЕТОДЫ РАБОТЫ МОДУЛЕЙ П ОТЕХНИЧЕСКОЙ ПОДДЕРЖКЕ
