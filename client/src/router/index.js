@@ -12,7 +12,7 @@ import innovation from '@/components/authRouter/wiki/innovation/innovation'
 
 
 //FileStorage
-import fileStorage from "../components/authRouter/fileStorage/fileStorage";
+import fileStorage from "@/components/authRouter/fileStorage/fileStorage";
 
 ///ТЕСТИРОВАНИЕ
 import newTest from '@/components/testings/newTest/newTest'
@@ -20,8 +20,8 @@ import newTest from '@/components/testings/newTest/newTest'
 
 //НАстройки
 //Настройки темы
-import settingsTheme from "../components/authRouter/settings/settings-theme/settingsTheme";
-import settingsWidgets from "../components/authRouter/settings/settings-widgets/settingsWidget";
+import settingsTheme from "@/components/authRouter/settings/settings-theme/settingsTheme";
+import settingsWidgets from "@/components/authRouter/settings/settings-widgets/settingsWidget";
 
 Vue.use(Router)
 
