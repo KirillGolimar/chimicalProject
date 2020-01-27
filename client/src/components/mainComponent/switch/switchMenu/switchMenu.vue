@@ -63,6 +63,7 @@
   max-height: 100vh;
   overflow-y: auto;
   overflow-x: hidden;
+  box-sizing: border-box;
   &::-webkit-scrollbar {
     width: 12px;
   }
