@@ -413,6 +413,7 @@
       display: flex;
       justify-content: flex-start;
       align-items: center;
+      box-sizing: border-box;
 
       > span {
         font-style: normal;
