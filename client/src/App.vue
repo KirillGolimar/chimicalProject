@@ -1,237 +1,143 @@
 <template>
-  <file-storage />
-<!--  <div id="app" @click="closeModal">-->
-<!--    <div class="block-alert">-->
-<!--      <Cm__alert-->
-<!--        v-for="(item, i ) in GETARRAYMESSAGE"-->
-<!--        :dataMessage="item"-->
-<!--        :key="`alert-${i}`"-->
-<!--        :keyAlert="i"-->
-<!--        :class="`alert-${i}`"-->
-<!--        @deleteAlert="deleteAlertParrent"-->
-<!--      />-->
-<!--    </div>-->
-<!--    <dropdown-menu/>-->
-<!--    <loader-->
-<!--      v-if="LOADER"-->
-<!--    />-->
-<!--    <transition name="loaderMessage">-->
-<!--      <loader-message v-if="getLoaderMessage"/>-->
-<!--    </transition>-->
-<!--    <support v-if="testTODOS"/>-->
-<!--    <div v-if="!testTODOS">-->
-<!--      <cm__header-->
-<!--        :dataHeader="dataHeader"-->
-<!--        @typeAuth="authorizationHeader"-->
-<!--      />-->
-<!--      <div id="noUser">-->
-<!--        <unauthorized-->
-<!--          v-if="!loader"-->
-<!--          :typeAuth="authorization"-->
-<!--          :dataInfo="dataInfo"-->
-<!--          :cardTestings="cardTestings"-->
-<!--          @registerUser="registerTrueInHome"-->
-<!--        />-->
-<!--      </div>-->
-<!--    </div>-->
-<!--    <div v-if="testTODOS">-->
-<!--      <app__auth-users/>-->
-<!--    </div>-->
-<!--  </div>-->
+  <div>
+    <span @click="flagModalDannone = true">Клик</span>
+    <transition name="modal-danone">
+      <rabota-modal-danone
+        :data-report-form="dataCardModal"
+        @modalClose="modalCloseParent"
+        v-if="flagModalDannone"
+        @openPhoto="openPhotoParent"
+      />
+      <modal-slider v-if="flagModalSlider" :data-slider="dataSlider" @closeModalSlider="closeModalSliderParent"/>
+    </transition>
+  </div>
+
 </template>
 
 <script>
-  import getInfoNoUser from "./services/getInfoNoUser";
-  import lsAuthorization from './services/registerAuthorization/authoriazation'
-  /**
-   * данные для slider
-   * ВХОДНЫЕ ДАННЫЕ
-   * {
-   *   name:"String" - имя слайдера
-   *   массив данных по слайдеру
-   *   data: [
-   *     {
-   *       img:'', - адрес картинки для фона
-   *       info:'', - информация по слайдеру
-   *       title:'', - заголовок слайдера
-   *       url:'' - ссылка по блоку слайдера
-   *     }
-   *   ]
-   * }
-   */
-  import Slider from "./components/slider/slider";
-  import Loader from "./components/loader/loader";
-  import Unauthorized from "./components/unauthorized/unauthorized";
-  import Cm__header from "./components/unauthorized/header/cm__header";
-  import Cm__alert from "./components/alert/cm__alert";
-  import NavMenu from "./components/navigationMenu/navMenu";
-  import App__authUsers from "./components/authorizedUser/app__auth-users";
-  import DropdownMenu from "./components/dropdownMenu/dropdownMenu";
-  import Support from "./components/authRouter/support/supportForm";
-  import LoaderMessage from "./components/loader/loaderMessage/loaderMessage";
-  import SettingsWidget from "./components/authRouter/settings/settings-widgets/settingsWidget";
-  import Home from "./components/authRouter/home/home";
-  import FileView from "./components/mainComponent/modal-view/fileView/fileView";
-  import FileStorage from "./components/authRouter/fileStorage/fileStorage";
+    import RabotaModalDanone from "./components/rabota-modal-danone/rabota-modal-danone";
+    import ModalSlider from "./components/rabota-modal-danone/modalSlider/modalSlider";
 
-  export default {
-    name: 'App',
-    components: {
-        FileStorage,
-        FileView,
-        Home,
-        SettingsWidget,
-      LoaderMessage,
-      Support, DropdownMenu, App__authUsers, NavMenu, Cm__alert, Cm__header, Unauthorized, Loader, Slider
-    },
-    computed: {
-      //вычисляпемое свйоство в хранилище, информация по пользователю
-      testTODOS() {
-        return this.$store.getters.INFOUSER
-      },
-      LOADER() {
-        return this.$store.getters.LOADER
-      },
-      GETARRAYMESSAGE() {
-        return this.$store.getters.ALERTARRAY
-      },
-      getLoaderMessage() {
-        return this.$store.getters.get_loaderMessage
-      }
-    },
-    data() {
-      return {
-        dataInfo: null,
-        dataHeader: {
-          register: {
-            title: 'Зарегистрироваться',
-            ref: 'register'
-          },
-          authorization: {
-            title: 'авторизоваться',
-            ref: 'auth'
-          },
-          home: {
-            title: 'на главную',
-            ref: 'home'
-          }
+    export default {
+        name: 'App',
+        components: {ModalSlider, RabotaModalDanone},
+        computed: {},
+        data() {
+            return {
+                flagModalDannone: false,
+                flagModalSlider: false,
+                dataCardModal: {
+                    task: {
+                        description: `Бизнес : кораблик г. Егорьевск ул. Советская переставить нутрилон супер премиум на золотую полку.
+                            В тт кораблик гудзон проверить сроки годности на всю продукцию до 22.03. Бизнес: во всех ДМ переставить каши
+                            согласно стандартам компании Бизнес : кораблик г. Егорьевск ул. Советская переставить нутрилон супер премиум на золотую полку.
+                            В тт кораблик гудзон проверить сроки годности на всю продукцию до 22.03. Бизнес : кораблик г. Егорьевск ул. Советская переставить нутрилон супер премиум на золотую полку.
+                            В тт кораблик гудзон проверить сроки годности на всю продукцию до 22.03.
+                            Бизнес: во всех ДМ переставить каши согласно стандартам компании. Советская переставить нутрилон супер премиум на золотую полку. Бизнес : кораблик г. Егорьевск ул. Советская переставить нутрилон супер премиум на золотую полку.
+                            В тт кораблик гудзон проверить сроки годности на всю продукцию до 22.03. Бизнес: во всех ДМ переставить каши
+                            согласно стандартам компании Бизнес : кораблик г. Егорьевск ул. Советская переставить нутрилон супер премиум на золотую полку.
+                            В тт кораблик гудзон проверить сроки годности на всю продукцию до 22.03. Бизнес : кораблик г. Егорьевск ул. Советская переставить нутрилон супер премиум на золотую полку.
+                            В тт кораблик гудзон проверить сроки годности на всю продукцию до 22.03.
+                            Бизнес: во всех ДМ переставить каши согласно стандартам компании. Советская переставить нутрилон супер премиум на золотую полку.`,
+                        status: 'Запланировано',
+                        dateStaging: '30.08.2019',
+                        dateFulfillment: '10.09.2019',
+                        dateCompletion: '15.09.2019',
+                        valuationForm: 'Стандартные работы MR',
+                        author: ['Иванов Иван Иванович', 'Иванов 1 Иван 1 Иванович 1'], // авторы задачи
+                        executorTask: 'Петров Петр Петрович', //исполнитель задачи
+                        levelOneUnit: 'Представительство в Красногорском районе Московской области', // подразделение 1гшо уровня
+                        executiveDivision: 'Отдел продаж',//Подразделение испольнителя
+
+                    },
+                    comment: {
+                        author: [{
+                            date: '10.09.2019',
+                            description: 'Бизнес: во всех ДМ переставить каши согласно стандартам компании'
+                        }],
+                        executor: [{
+                            date: '10.09.2019',
+                            description: 'Бизнес: 12312 12 3123 123 123 123 123 123 123 12 3'
+                        }]
+                    },
+                    snapshots: {
+                        author: [
+                            {
+                                url: './../../../../static/image/authorization.jpg',
+                                download: 'urlkasd;alksdkas; ;laksd ;l',
+                                date: '22.02.12'
+                            },
+                            {
+                                url: './../../../../static/image/fonNews.png',
+                                download: 'urlkasd;alksdkas; ;laksd ;l',
+                                date: '22.02.12'
+                            },
+                            {
+                                url: './../../../../static/image/Backgraund.png',
+                                download: 'urlkasd;alksdkas; ;laksd ;l',
+                                date: '22.02.12'
+                            },
+                        ], //снимки авторов
+                        executor: [
+                            {
+                                url: './../../../../static/image/Backgraund.png',
+                                download: 'urlkasd;alksdkas; ;laksd ;l',
+                                date: '22.02.12'
+                            },
+                            {
+                                url: './../../../../static/image/authorization.jpg',
+                                download: 'urlkasd;alksdkas; ;laksd ;l',
+                                date: '22.02.12'
+                            },
+                            {
+                                url: './../../../../static/image/fonNews.png',
+                                download: 'urlkasd;alksdkas; ;laksd ;l',
+                                date: '22.02.12'
+                            },
+
+                        ] // снимки исполнителей
+                    }
+                },
+                dataSlider: {
+                    page: null, // сколько всего картинок
+                    activePage: null, // активная картинка
+                    arrayUrl: null, //массив картинок
+                    from: null // в каком блоке
+                }
+            }
         },
-        loader: false,
-        //обект по активности авторизации и регистрации
-        authorization: {
-          auth: false,
-          register: false
-        },
-        alert: [],
-        cardTestings: [],
-      }
-    },
-    methods: {
-      /**
-       * Метод удаления сообщения
-       */
-      deleteAlertParrent(data) {
-        document.getElementsByClassName(`alert-${data}`)[0].remove()
-      },
-      //запрос на сервер по инфе слайдера
-      async dataHomeNoUser() {
-        this.$store.commit('SET_LOADER', true);
-        const res = await getInfoNoUser.infoData();
-        this.$store.commit('SET_NOAUTHORIZATION', res.data);
-        this.dataInfo = this.$store.getters.NOAUTHORIAZATION.slider;
-        this.cardTestings = this.$store.getters.NOAUTHORIAZATION.cardInfo;
-        this.$store.commit('SET_LOADER', false)
-      },
-      /**
-       * метод определеющий какое действие выполнить для не зарегистрированного пользователя
-       * @param data - активное событие из шапки
-       */
-      authorizationHeader(data) {
-        for (let item in this.authorization) item === data ? this.authorization[item] = true : this.authorization[item] = false
-      },
-      /**
-       * метод перехода после регистрации на домашнюю страницу
-       * @param data
-       */
-      registerTrueInHome(data) {
-        this.alert.push({
-          type: 'success',
-          title: `Регистрация`,
-          message: data.message,
-          event: true,
-          link: {
-            lk: '',
-            title: ''
-          }
-        });
-        setTimeout(() => {
-          data = 'home'; //возвращаемся н главную
-          for (let item in this.authorization) item === data ? this.authorization[item] = true : this.authorization[item] = false
-        }, 1000)
-
-      },
-      /**
-       * МЕТОД ПРОВЕРКИ ПРЛЬЗОВАТЕЛЯ, ЕЛСИ ЕСТЬ В localstorage info тогда шлем запрос
-       */
-      async lsUath() {
-        if (localStorage.getItem('user')) {
-          const res = await lsAuthorization.localStorage({id: localStorage.getItem('user')});
-          this.$store.commit('SET_INFOUSER', res.data);
-
-        } else {
-          this.dataHomeNoUser();
+        methods: {
+            modalCloseParent() {
+                this.flagModalDannone = false;
+            },
+            // Обработка клика выбора фотографии
+            openPhotoParent(data) {
+                this.dataSlider.from = data.type;
+                this.dataSlider.page = this.dataCardModal.snapshots[data.type].length - 1;
+                this.dataSlider.arrayUrl = this.dataCardModal.snapshots[data.type].slice().map(el => el.url);
+                this.dataCardModal.snapshots[data.type].forEach((el, i) => el.url === data.url ? this.dataSlider.activePage = i : '');
+                this.flagModalDannone = false;
+                this.flagModalSlider = true;
+            },
+            closeModalSliderParent() {
+                this.flagModalDannone = true;
+                this.flagModalSlider = false;
+            }
         }
-      },
-      //Метод закрытия все модалок при клике в свободную область
-      closeModal() {
-        //если модалка открыта, тогда закрываем её при клике по любому полю
-        if (this.$store.getters.DROPDOWNMENU.bool) {
-          this.$store.commit('SET_CLOSEDROPDOWNMENU')
-        }
-
-      }
-    },
-    mounted() {
-      this.lsUath();
-      this.dataHomeNoUser();
-    },
-    beforeUpdate() {
-      /**
-       * ЛОВИМ, ЕСЛИ загрузчик активный, то отключаем его
-       * при условии, если юзера нет и загрузчик активный
-       */
-      if (this.$store.getters.LOADER && !localStorage.getItem('user')) {
-        setTimeout(() => {
-          this.$store.commit('SET_LOADER', false)
-        }, 1000)
-      }
     }
-  }
 </script>
 
 <style lang="less">
-  #app {
-    width: 100%;
-    min-height: 100vh;
-
-    .block-alert {
-      position: absolute;
-      top: 50px;
-      left: calc(50% - 225px);
-      width: 500px;
-      height: auto;
-    }
-
-    #noUser {
-      width: 100%;
-      height: 100%;
-    }
+  .modal-danone-enter-active {
+    transition: all .1s ease;
   }
 
-  .loaderMessage-enter-active, .loaderMessage-leave-active {
-    transition: opacity .5s;
+  .modal-danone-leave-active {
+    transition: all .1s cubic-bezier(1.0, 0.5, 0.8, 1.0);
   }
-  .loaderMessage-enter, .loaderMessage-leave-to /* .fade-leave-active до версии 2.1.8 */ {
+
+  .modal-danone-enter, .modal-danone-leave-to {
+    transform: scale(0.7);
     opacity: 0;
   }
 </style>
