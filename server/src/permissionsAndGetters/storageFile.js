@@ -29,38 +29,46 @@ const poll = mysql.createPool(dataBase).promise()
 
 function getStorageFile(link, login = '', pass = '', send) {
     let status = false;
-    poll.execute(returnRole(login, pass))
-        .then(res => {
-            if (res[0]) {
-                if (res[0][0].role !== undefined && res[0][0].role !== null && res[0][0].role !== '') {
-                    let responseRole = res[0][0].role;
-                    //доступ пользователя по ссылке
-                    //если роль известна, заполняем все возможные ссылки для этой роли
-                    let availableLinks = {
-                        [responseRole]: []
-                    };
-                    if (userLinks.roleLinks[responseRole] !== undefined) {
-                        linksRecurs(userLinks.roleLinks[responseRole], availableLinks[responseRole])
-                        accessCheck(availableLinks[responseRole], link);
-                    }
-                    if(status) {
-                        const fileStorage = require('./../fileStorage/fileStorage');
-                        const api = './static';
-                        send.send({
-                            status: true,
-                            message: 'все хорошо, файловая система работает',
-                            typeMessage: 'success',
-                            info: fileStorage(api)
-                        })
-                    }else {
-                        send.send({status: false, message: 'у вас нет доступа к данному рессурсу', typeMessage: 'error'})
-                    }
-                } else {
-                    send.send({status: false, message: 'у вас нет доступа к данному рессурсу', typeMessage: 'error'})
-                }
-            }
-        })
-        .catch(err => console.log(err))
+    const fileStorage = require('./../fileStorage/fileStorage');
+    const api = './static';
+    send.send({
+        status: true,
+        message: 'все хорошо, файловая система работает',
+        typeMessage: 'success',
+        info: fileStorage(api)
+    })
+    // poll.execute(returnRole(login, pass))
+    //     .then(res => {
+    //         if (res[0]) {
+    //             if (res[0][0].role !== undefined && res[0][0].role !== null && res[0][0].role !== '') {
+    //                 let responseRole = res[0][0].role;
+    //                 //доступ пользователя по ссылке
+    //                 //если роль известна, заполняем все возможные ссылки для этой роли
+    //                 let availableLinks = {
+    //                     [responseRole]: []
+    //                 };
+    //                 if (userLinks.roleLinks[responseRole] !== undefined) {
+    //                     linksRecurs(userLinks.roleLinks[responseRole], availableLinks[responseRole])
+    //                     accessCheck(availableLinks[responseRole], link);
+    //                 }
+    //                 if(status) {
+    //                     const fileStorage = require('./../fileStorage/fileStorage');
+    //                     const api = './static';
+    //                     send.send({
+    //                         status: true,
+    //                         message: 'все хорошо, файловая система работает',
+    //                         typeMessage: 'success',
+    //                         info: fileStorage(api)
+    //                     })
+    //                 }else {
+    //                     send.send({status: false, message: 'у вас нет доступа к данному рессурсу', typeMessage: 'error'})
+    //                 }
+    //             } else {
+    //                 send.send({status: false, message: 'у вас нет доступа к данному рессурсу', typeMessage: 'error'})
+    //             }
+    //         }
+    //     })
+    //     .catch(err => console.log(err))
 
     /**
      * функция перебора всех доступных ссылок вызываеться рекурсивно

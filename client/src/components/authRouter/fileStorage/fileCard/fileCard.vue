@@ -1,6 +1,5 @@
 <template>
-  <div
-    id="fileCard"
+  <div id="fileCard"
     :title="FS_data.title"
     @mousedown.left="singleClickDataParent"
     @mouseup.left="positionMouseEnd"
@@ -81,16 +80,18 @@
                     this.$emit('activeFolder', this.FS_data.title)
                 } else {
                     console.log('окрываем файл')
-                    this.getOpenFile(this.FS_data.fullAddress)
+                    this.$emit('fileOpen', this.FS_data.fullAddress)
+                    // this.getOpenFile(this.FS_data.fullAddress)
                 }
             },
             /**
              * метод открытия файла
              */
             async getOpenFile(url) {
-                const res = await openFile.getOpenFile(this.$store.getters.INFOUSER.id, url)
+                const res = await openFile.getOpenFile('1', url)
                 if(res) {
                     if(res.data) {
+                        this.$emit('openFile')
                         // console.log(res.data) :TODO дописать как отдавать клиенту файлы
                     }
                 }
