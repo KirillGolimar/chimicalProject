@@ -31,12 +31,14 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.14);
   border-radius: 2px;
   font-family: Roboto, sans-serif;
+  box-sizing: border-box;
   .address-line {
     width: 100%;
     height: 100%;
     display: flex;
     align-items: center;
     padding: 0 26px;
+    box-sizing: border-box;
     > span {
       font-size: 14px;
       line-height: 21px;

@@ -23,7 +23,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 app.use(fileUlpoad());
-app.use( express.static('./static'));
+app.use( '/public',express.static('./static'));
 
 const poll = mysql.createPool(config.dataBase).promise();
 
@@ -215,6 +215,13 @@ app.post('/:id/fileStorage/addFiles', function (req, res) {
 
 app.get('/open/', function (req, res) {
     require('./fileStorage/openFile/openFile')(req.query.url, res);
+});
+
+/*
+метод обработки загрузки файла
+ */
+app.get('/download', (req,res) => {
+    require('./fileStorage/download')(req.query.url, res)
 });
 
 

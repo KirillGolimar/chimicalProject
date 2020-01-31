@@ -22,11 +22,11 @@
             :fill="styleActions"/>
         </svg>
       </div>
-      <div v-if="flagActions" class="modal-view__settings-download actions-icons" @click="downloadFile">
+      <a :href="downloadImageUrl" :download="downloadImageUrl" v-if="flagActions" class="modal-view__settings-download actions-icons">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M5.01562 18H18.9844V20.0156H5.01562V18ZM18.9844 9L12 15.9844L5.01562 9H9V3H15V9H18.9844Z" :fill="styleActions"/>
         </svg>
-      </div>
+      </a>
     </div>
     <div class="modal-view__title">
       <span>{{ typeFile }}</span>
@@ -42,7 +42,7 @@
       </div>
       <div class="modal-view__container-block">
         <img :src="urlImage" alt="" v-if="typeFile === 'image'">
-        <div class="modal-view__container-block-text" v-if="typeFile === 'text'">{{ dataFileInServer.length === 0 ? 'Файл пустой'  : dataFileInServer}}</div>
+<!--        Думаю открывать все осталбные файлы можно и в новой вкладкее браузера ибо не придумывать велосипед -->
       </div>
     </div>
   </div>
@@ -87,10 +87,13 @@
                 return this.flagBigSize ? '#ffffff' : '#666666';
             },
             urlImage() {
-                return server + this.dataFile.fullAddress.replace('./static/', '')
+                return server + this.dataFile.fullAddress.replace('./static/', 'public/')
             },
             typeFile() {
                 return typeDefinition(this.dataFile.type)
+            },
+            downloadImageUrl() {
+                return `${server}${this.dataFile.fullAddress.replace('./static/', 'public/')}`
             }
         },
         methods: {
@@ -102,8 +105,10 @@
                 this.flagBigSize = !this.flagBigSize
             },
 
-            downloadFile() {
-              console.log('скаать файл')
+            async downloadFile() {
+              await Axios.get(`${server}download?url=${this.dataFile.fullAddress.replace('./static/', 'public/')}`)
+                  .then(res => console.log(res))
+                  .catch(err=> console.log(err))
             },
             // загрузка файла
             async openFile() {
@@ -124,7 +129,7 @@
                 })
                     .catch(err => console.log(err))
                     .finally(() => this.flagDownloaderFile = false)
-            }
+            },
         },
         mounted() {
             if(this.dataFile.type === '.pdf') this.openFilePdf();
@@ -213,6 +218,8 @@
 
       &-loader {
         position: absolute;
+        left: 0;
+        top: 0;
         width: 100%;
         height: 100%;
         display: flex;
