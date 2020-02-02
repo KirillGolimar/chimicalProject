@@ -67,7 +67,7 @@
 
     <modal-view
       v-if="flagModalView"
-      :url-file="urlOpenFile"
+      :data-file="dataOpenFile"
       @closeModalView="flagModalView = false"
     />
 
@@ -130,18 +130,7 @@
             dataFileStorage: {
                 type: Array,
                 default: function () {
-                    return [
-                        {
-                            title: 'проекты',
-                            type: 'folder',
-                            children: []
-                        },
-                        {
-                            title: 'отчет какой то',
-                            type: 'txt',
-                            children: []
-                        }
-                    ]
+                    return []
                 }
             }
         },
@@ -178,13 +167,13 @@
                 newFiles: [],
                 activeUrl: '',
                 flagModalView: false, // флаг модального окна просмотров
-                urlOpenFile: '' // поля дял записи файла который открываем
+                dataOpenFile: '' // поля дял записи файла который открываем
             }
         },
         watch: {
             //при изменении массива названий, меняю полный адрес
             adressLine(data) {
-                this.newFiles = [] // при переходе куда лиюо, убираю добавленные файлы
+                this.newFiles = []; // при переходе куда лиюо, убираю добавленные файлы
                 if (data.length === 1) {
                     this.activeUrl = '/static'
                 } else {
@@ -196,7 +185,7 @@
         methods: {
             // отдаем от дочернего данные по файлу который нужно открыть
             fileOpenParent(data) {
-                this.urlOpenFile = data; // записал адресм файла который открываем
+                this.dataOpenFile = this.nestingArray[this.nestingArray.length - 1].find(el => el.fullAddress === data); // записал данные по фалйу который открываем
                 this.flagModalView = true // открываю модалку
             },
             /**
@@ -241,7 +230,7 @@
              * метод перехода назад
              */
             backStorage() {
-                this.mocalSettingsCard = false //закрываю модалку
+                this.mocalSettingsCard = false; //закрываю модалку
                 if (this.adressLine.length > 1) {
                     this.adressLine.pop(); // удаляю последнюю строку из массива
                     this.nestingArray.pop();
@@ -279,7 +268,7 @@
              *  Функция запроса на изменение данных по файлу
              */
             async setData(data) {
-                let alert = {}
+                let alert = {};
                 const res = await changeFiles.changeFiles(data, this.$route.params.id);
                 //если ответ пришел и он положительный, тогда меняем данные в компоненте
                 if (res && res.data.status) {
@@ -288,9 +277,9 @@
                             el.fullAddress = res.data.fullAddressNew;
                             el.title = res.data.nameNew
                         }
-                    })
-                    alert.message = res.data.message
-                    alert.type = res.data.typeMessage
+                    });
+                    alert.message = res.data.message;
+                    alert.type = res.data.typeMessage;
                     this.$store.commit('SET_ALERTARRAY', alert)
                 }
             },
@@ -317,7 +306,7 @@
              * после получения ответа о удалении, удаляю на клиенте этот элемент
              */
             async delFileFS(data) {
-                let alert = {}
+                let alert = {};
                 const res = await deleteFiles.deleteFile(data, this.$route.params.id);
                 if (res.data) {
                     if (res.data.status) {
@@ -330,8 +319,8 @@
                     } else {
                         this.FSLoader = false //закрываю загрузчик файлового хранилища
                     }
-                    alert.message = res.data.message
-                    alert.type = res.data.typeMessage
+                    alert.message = res.data.message;
+                    alert.type = res.data.typeMessage;
                     this.$store.commit('SET_ALERTARRAY', alert)
                 }
             },
@@ -339,8 +328,8 @@
              * функция отображения свйоств файла
              */
             propertiesFilesFS(data) {
-                this.FSModalPropertiesData = data //:TODO записал данные по файлу
-                this.FSLoader = false //закрываю загрузчик файлового хранилища
+                this.FSModalPropertiesData = data; //:TODO записал данные по файлу
+                this.FSLoader = false; //закрываю загрузчик файлового хранилища
                 this.FSModalProperties = true; //отображение модального окна по свойствам файла
             },
             /**
@@ -349,8 +338,8 @@
             noneContextMenu() {
                 this.$el.oncontextmenu = function () {
                     return false
-                }
-                this.FSModalProperties = false
+                };
+                this.FSModalProperties = false;
             },
             /**
              * :TODO ОБНОВЛЕННЫЙ МЕТОД
@@ -390,18 +379,18 @@
                 // вырезание временного файла , после добаления его
                 for (let i = 0; i < this.newFiles.length; i++) {
                     if (this.newFiles[i].name === data.title) {
-                        this.newFiles.splice(i, 1)
+                        this.newFiles.splice(i, 1);
                     }
                 }
-                this.nestingArray[this.nestingArray.length - 1].push(data) //записал новый добавленный файл в основной массив файлов
+                this.nestingArray[this.nestingArray.length - 1].push(data); //записал новый добавленный файл в основной массив файлов
             },
 
         },
         mounted() {
             //инициализация карты каталога
-            this.getData()
+            this.getData();
             //инициализация ссылки при иниц. каталога
-            this.activeUrl = `/static`
+            this.activeUrl = `/static`;
 
         }
     }
@@ -424,6 +413,7 @@
       display: flex;
       justify-content: flex-start;
       align-items: center;
+      box-sizing: border-box;
 
       > span {
         font-style: normal;
