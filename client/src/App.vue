@@ -1,6 +1,7 @@
 <template>
   <div>
-    <span @click="flagModalDannone = true">Клик</span>
+    <span @click="flagModalDannone = true">Клик</span><br>
+    <span @click="flagModalSettings = true">Клик Редактирование</span>
     <transition name="modal-danone">
       <rabota-modal-danone
         :data-report-form="dataCardModal"
@@ -8,6 +9,9 @@
         v-if="flagModalDannone"
         @openPhoto="openPhotoParent"
       />
+      <modal-editing
+        v-if="flagModalSettings"
+        @closeModal="closeModalParrent"/>
       <modal-slider v-if="flagModalSlider" :data-slider="dataSlider" @closeModalSlider="closeModalSliderParent"/>
     </transition>
   </div>
@@ -15,16 +19,19 @@
 </template>
 
 <script>
-    import RabotaModalDanone from "./components/rabota-modal-danone/rabota-modal-danone";
-    import ModalSlider from "./components/rabota-modal-danone/modalSlider/modalSlider";
+
+    import RabotaModalDanone from "./components/rabota-modal-danone/modalView/rabota-modal-danone";
+    import ModalSlider from "./components/rabota-modal-danone/modalView/modalSlider/modalSlider";
+    import ModalEditing from "./components/rabota-modal-danone/modalEditing/modalEditing";
 
     export default {
         name: 'App',
-        components: {ModalSlider, RabotaModalDanone},
+        components: {ModalEditing, ModalSlider, RabotaModalDanone},
         computed: {},
         data() {
             return {
                 flagModalDannone: false,
+                flagModalSettings: false,
                 flagModalSlider: false,
                 dataCardModal: {
                     task: {
@@ -122,6 +129,9 @@
             closeModalSliderParent() {
                 this.flagModalDannone = true;
                 this.flagModalSlider = false;
+            },
+            closeModalParrent() {
+                this.flagModalSettings = false
             }
         }
     }

@@ -73,12 +73,13 @@
 </template>
 
 <script>
-    import Comment from "./comment/comment";
-    import CardPhoto from "./cardPhoto/cardPhoto";
 
+
+    import CardPhoto from "./cardPhoto/cardPhoto";
+    import Comment from "./comment/comment";
     export default {
         name: "rabota-modal-danone",
-        components: {CardPhoto, Comment},
+        components: {Comment, CardPhoto},
         props: {
             dataReportForm: {
                 type: Object,
@@ -437,7 +438,7 @@
 
         &-task {
           &__description {
-            justify-content: space-around;
+            justify-content: space-between;
 
             > div {
               width: calc(50% - 27px);
@@ -462,7 +463,7 @@
 
         &-comment {
           &__body {
-            justify-content: space-around;
+            justify-content: space-between;
 
             > div {
               width: calc(50% - 15.5px) !important;
@@ -494,6 +495,8 @@
   @media (max-width: 916px) {
     .report-form {
       &__container {
+        width: 100%;
+        height: 100%;
         &-task {
           &__description {
             height: auto;
@@ -502,7 +505,7 @@
             align-items: center;
 
             &-desc {
-              height: 260px;
+              height: auto;
               width: 100% !important;
               padding: 12px !important;
               margin-bottom: 24px;
@@ -548,7 +551,6 @@
 
                 > div {
                   min-width: 328px;
-                  margin-right: 0 !important;
                 }
               }
             }
@@ -574,6 +576,7 @@
                 > div {
                   width: 100%;
                   min-width: 100%;
+                  margin-right: 0 !important;
                 }
               }
             }

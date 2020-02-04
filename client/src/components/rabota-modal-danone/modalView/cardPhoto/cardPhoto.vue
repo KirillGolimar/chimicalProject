@@ -80,7 +80,6 @@
       &-download {
         display: flex;
         align-items: center;
-        height: 24px;
         > svg {
           margin-right: 8px;
         }
@@ -93,6 +92,23 @@
           text-decoration-line: underline;
           color: #125BB5;
 
+        }
+      }
+    }
+  }
+
+  @media (max-width: 500px) {
+    .card-photo {
+      &-settings {
+        &-date {
+          > span {
+            font-size: 12px;
+          }
+        }
+        &-download {
+          > a {
+            font-size: 12px;
+          }
         }
       }
     }

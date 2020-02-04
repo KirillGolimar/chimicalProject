@@ -129,15 +129,16 @@
           height: 100%;
           min-width: 100%;
           background-position: center;
-          background-size: cover;
+          background-size: contain;
+          background-repeat: no-repeat;
         }
       }
     }
 
     &-close {
       position: absolute;
-      top: 10%;
-      right: 15%;
+      top: 2em;
+      right: 2em;
       cursor: pointer;
     }
 
@@ -160,6 +161,15 @@
 
     &-back {
       left: 5%;
+    }
+  }
+
+  @media (max-width: 916px) {
+    .modal-slider {
+      &-container {
+        width: 100%;
+        height: 100%;
+      }
     }
   }
 
