@@ -196,7 +196,6 @@
         },
         mounted() {
             document.addEventListener('keydown', this.exitKey, false);
-            this.getData()
         },
         destroyed() {
             document.removeEventListener('keydown', this.exitKey, false);
@@ -500,20 +499,6 @@
     }
   }
 
-
-  .modal-danone-enter-active {
-    transition: all .1s ease;
-  }
-
-  .modal-danone-leave-active {
-    transition: all .1s cubic-bezier(1.0, 0.5, 0.8, 1.0);
-  }
-
-  .modal-danone-enter, .modal-danone-leave-to {
-    transform: scale(0.7);
-    opacity: 0;
-  }
-
   @media (max-width: 1604px) {
     .report-form {
       &__container {
@@ -608,7 +593,6 @@
       &__container {
         width: 100%;
         height: 100%;
-
         &-task {
           &__description {
             height: auto;
