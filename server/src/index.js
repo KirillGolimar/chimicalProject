@@ -22,7 +22,8 @@ const app = express();
 
 app.use(bodyParser.json());
 app.use(cors());
-app.use(fileUlpoad())
+app.use(fileUlpoad());
+app.use( express.static('./static'));
 
 const poll = mysql.createPool(config.dataBase).promise();
 
@@ -33,6 +34,7 @@ app.get('/', (req, res) => {
         cardInfo: cardInfo.cardInfo
     })
 });
+
 
 
 /**
@@ -210,16 +212,10 @@ app.post('/:id/fileStorage/addFiles', function (req, res) {
 /**
  * МЕТОД ОБРАБОТКИ ОТКРЫТИЯ ФАЙЛА С ХРАНИЛИЩА
  */
-app.get('/fileStorage/open', function (req, res) {
-    console.log(req.query.url)
-    // const openFile = require('./fileStorage/openFile/openFile')
-    // openFile(req.query.url, res)
-    let stream = fs.createWriteStream(`C://Users/stoyan/Desktop/testtt/chimicalProject/server${req.query.url.substr(1)}`);
-    // console.log(`C://Users/stoyan/Desktop/testtt/chimicalProject/server${req.query.url.substr(1)}`)
-    // req.pipe(stream)
-    // stream.on('end', () => res.end())
-    // stream.on('error', (err) => console.log(err))
-})
+
+app.get('/open/', function (req, res) {
+    require('./fileStorage/openFile/openFile')(req.query.url, res);
+});
 
 
 /**
