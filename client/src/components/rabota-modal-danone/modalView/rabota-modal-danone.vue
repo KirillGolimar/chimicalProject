@@ -1,106 +1,202 @@
 <template>
-  <div class="report-form">
-    <div class="report-form__container">
-      <div class="report-form__container-close" @click="closeModal">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path
-            d="M12.6012 11.9999L16.9265 7.6746C17.0918 7.50873 17.0921 7.2402 16.9265 7.0746C16.7601 6.90873 16.4918 6.90873 16.326 7.0746L12.0009 11.3997L7.67557 7.0746C7.51051 6.90873 7.24117 6.90873 7.07557 7.0746C6.90971 7.2402 6.90971 7.50873 7.07557 7.6746L11.4006 11.9999L7.07584 16.3247C6.90997 16.4906 6.90997 16.7591 7.07584 16.9253C7.15877 17.0079 7.26731 17.0498 7.37584 17.0495C7.48464 17.0498 7.59317 17.0079 7.67584 16.9253L12.0009 12.6002L16.326 16.9253C16.4089 17.0079 16.5177 17.0498 16.6262 17.0498C16.7345 17.0498 16.8433 17.0079 16.9265 16.9253C17.0921 16.7591 17.0921 16.4906 16.9262 16.3247L12.6012 11.9999Z"
-            fill="#1E1E1E"/>
-          <path fill-rule="evenodd" clip-rule="evenodd"
-                d="M0 12C0 5.38347 5.38347 0 12 0C18.6168 0 24 5.38347 24 12C24 18.6165 18.6168 24 12 24C5.38347 24 0 18.6168 0 12ZM0.848958 11.9999C0.848958 18.1484 5.85136 23.1508 11.9999 23.1508C18.1487 23.1508 23.1508 18.1484 23.1508 12.0002C23.1508 5.8511 18.1487 0.848698 11.9999 0.848698C5.85109 0.848698 0.848958 5.85083 0.848958 11.9999Z"
+  <div class="layout-modal">
+    <span @click="openModal">{{ label }}</span>
+    <transition name="modal-danone">
+      <div class="report-form" ref="modalElement" v-if="flagModalTsk">
+        <div class="report-form__container">
+          <div class="report-form__container-close" @click="closeModal">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M12.6012 11.9999L16.9265 7.6746C17.0918 7.50873 17.0921 7.2402 16.9265 7.0746C16.7601 6.90873 16.4918 6.90873 16.326 7.0746L12.0009 11.3997L7.67557 7.0746C7.51051 6.90873 7.24117 6.90873 7.07557 7.0746C6.90971 7.2402 6.90971 7.50873 7.07557 7.6746L11.4006 11.9999L7.07584 16.3247C6.90997 16.4906 6.90997 16.7591 7.07584 16.9253C7.15877 17.0079 7.26731 17.0498 7.37584 17.0495C7.48464 17.0498 7.59317 17.0079 7.67584 16.9253L12.0009 12.6002L16.326 16.9253C16.4089 17.0079 16.5177 17.0498 16.6262 17.0498C16.7345 17.0498 16.8433 17.0079 16.9265 16.9253C17.0921 16.7591 17.0921 16.4906 16.9262 16.3247L12.6012 11.9999Z"
                 fill="#1E1E1E"/>
-        </svg>
-      </div>
-      <div class="report-form__container-task">
-        <div class="report-form__container-task__title">
-          <span>Задача:</span>
-        </div>
-        <div class="report-form__container-task__description">
-          <div class="report-form__container-task__description-desc">
-            <span>{{ dataReportForm.task.description }}</span>
+              <path fill-rule="evenodd" clip-rule="evenodd"
+                    d="M0 12C0 5.38347 5.38347 0 12 0C18.6168 0 24 5.38347 24 12C24 18.6165 18.6168 24 12 24C5.38347 24 0 18.6168 0 12ZM0.848958 11.9999C0.848958 18.1484 5.85136 23.1508 11.9999 23.1508C18.1487 23.1508 23.1508 18.1484 23.1508 12.0002C23.1508 5.8511 18.1487 0.848698 11.9999 0.848698C5.85109 0.848698 0.848958 5.85083 0.848958 11.9999Z"
+                    fill="#1E1E1E"/>
+            </svg>
           </div>
-          <div class="report-form__container-task__description-status">
-            <span><i>статус:</i>{{ dataReportForm.task.status }}</span>
-            <span><i>Дата постановки:</i> {{ dataReportForm.task.dateStaging }}</span>
-            <span><i>Дата выполнения:</i> {{ dataReportForm.task.dateFulfillment }}</span>
-            <span><i>Дата завершения:</i> {{ dataReportForm.task.dateCompletion }}</span>
-            <span><i>Оценочная форма:</i> {{ dataReportForm.task.valuationForm }}</span>
-          </div>
-        </div>
-        <div class="report-form__container-task__author">
-          <span><i>Авторы задачи:</i>{{ dataReportForm.task.author.join(', ') }}</span>
-          <span><i>исполнитель задачи:</i>{{ dataReportForm.task.executorTask }}</span>
-          <span><i>подразделение 1 уровня исполнителя:</i>{{ dataReportForm.task.levelOneUnit }}</span>
-          <span><i>Подразделение испольнителя:</i>{{ dataReportForm.task.executiveDivision }}</span>
-        </div>
-      </div>
-      <div class="report-form__container-comment">
-        <div class="report-form__container-comment__title">
-          <span>Комментарии:</span>
-        </div>
-        <div class="report-form__container-comment__body">
-          <div>
-            <comment from="автор" :data-comment="dataReportForm.comment.author"/>
-          </div>
-          <div>
-            <comment from="исполнитель" :data-comment="dataReportForm.comment.executor"/>
-          </div>
-        </div>
-      </div>
-      <div class="report-form__container-snapshots">
-        <div class="report-form__container-snapshots__title">
-          <span>Снимки</span>
-        </div>
-        <div class="report-form__container-snapshots__body">
-          <div class="report-form__container-snapshots__body-author">
-            <div class="report-form__container-snapshots__body-author-title"><span>автор</span></div>
-            <div class="report-form__container-snapshots__body-author-body all-snapshots">
-              <card-photo v-for="(card, i) in dataReportForm.snapshots.author" type-card="author" :key="i"
-                          :data-card="card" @openPhoto="openPhotoParent"/>
+          <div class="report-form__container-task">
+            <div class="report-form__container-task__title">
+              <span>Задача:</span>
+            </div>
+            <div class="report-form__container-task__description">
+              <div class="report-form__container-task__description-desc"
+                   v-if="dataReportForm.task && dataReportForm.task.description">
+                <span>{{ dataReportForm.task.description }}</span>
+              </div>
+              <div class="report-form__container-task__description-status"
+                   v-if="dataReportForm.task && dataReportForm.task.status">
+                <span><i>статус:</i>{{ dataReportForm.task.status }}</span>
+                <span><i>Дата постановки:</i> {{ dataReportForm.task.dateStaging || '' }}</span>
+                <span><i>Дата выполнения:</i> {{ dataReportForm.task.dateFulfillment || '' }}</span>
+                <span><i>Дата завершения:</i> {{ dataReportForm.task.dateCompletion || '' }}</span>
+                <span><i>Оценочная форма:</i> {{ dataReportForm.task.valuationForm || ''}}</span>
+              </div>
+            </div>
+            <div class="report-form__container-task__author">
+              <span><i>Авторы задачи:</i>{{ dataReportForm.task.author || '' }}</span>
+              <span><i>исполнитель задачи:</i>{{ dataReportForm.task.executorTask || ''}}</span>
+              <span><i>подразделение 1 уровня исполнителя:</i>{{ dataReportForm.task.levelOneUnit || '' }}</span>
+              <span><i>Подразделение испольнителя:</i>{{ dataReportForm.task.executiveDivision || ''}}</span>
             </div>
           </div>
-          <div class="report-form__container-snapshots__body-executor">
-            <div class="report-form__container-snapshots__body-executor-title"><span>исполнитель</span></div>
-            <div class="report-form__container-snapshots__body-executor-body all-snapshots">
-              <card-photo v-for="(card, i) in dataReportForm.snapshots.executor" type-card="executor" :key="i"
-                          :data-card="card" @openPhoto="openPhotoParent"/>
+          <div class="report-form__container-comment">
+            <div class="report-form__container-comment__title">
+              <span>Комментарии:</span>
+            </div>
+            <div class="report-form__container-comment__body">
+              <div>
+                <comment from="автор" :data-comment="dataReportForm.comment.author || []"/>
+              </div>
+              <div>
+                <comment from="исполнитель" :data-comment="dataReportForm.comment.executor || []"/>
+              </div>
+            </div>
+          </div>
+          <div class="report-form__container-snapshots">
+            <div class="report-form__container-snapshots__title">
+              <span>Снимки</span>
+            </div>
+            <div class="report-form__container-snapshots__body">
+              <div class="report-form__container-snapshots__body-author">
+                <div class="report-form__container-snapshots__body-author-title"><span>автор</span></div>
+                <div class="report-form__container-snapshots__body-author-body all-snapshots">
+                  <card-photo v-for="(card, i) in dataReportForm.snapshots.author" type-card="author" :key="i"
+                              :data-card="card" @openPhoto="openPhotoParent"/>
+                </div>
+              </div>
+              <div class="report-form__container-snapshots__body-executor">
+                <div class="report-form__container-snapshots__body-executor-title"><span>исполнитель</span></div>
+                <div class="report-form__container-snapshots__body-executor-body all-snapshots">
+                  <card-photo v-for="(card, i) in dataReportForm.snapshots.executor" type-card="executor" :key="i"
+                              :data-card="card" @openPhoto="openPhotoParent"/>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+      <modal-slider v-if="flagModalSlider" :data-slider="dataSlider" @closeModalSlider="closeModalSliderParent"/>
+    </transition>
   </div>
 </template>
 
 <script>
 
-
+    import Axios from 'axios'
     import CardPhoto from "./cardPhoto/cardPhoto";
     import Comment from "./comment/comment";
+    import ModalSlider from "./modalSlider/modalSlider";
+
     export default {
         name: "rabota-modal-danone",
-        components: {Comment, CardPhoto},
+        components: {ModalSlider, Comment, CardPhoto},
         props: {
-            dataReportForm: {
-                type: Object,
-                default: () => {
+            link: {
+                type: String,
+                default: 'http://danone/fc/ajax/get-task/task_id/8115'
+                // default: 'http://danone/fc/ajax/get-task/task_id/5116'
+            },
+            label: {
+                type: String,
+                default: 'кнопка'
+            }
+        },
+        data() {
+            return {
+                // отображение собственно модалки
+                flagModalTsk: false,
+                // флаг модалкит просмотра фоток
+                flagModalSlider: false,
+                // данные для карточки
+                dataReportForm: {
+                    task: {},
+                    comment: {},
+                    snapshots: {
+                        executor: [],
+                        author: []
+                    }
+                },
+                // информация по слайдеру
+                dataSlider: {
+                    page: null, // сколько всего картинок
+                    activePage: null, // активная картинка
+                    arrayUrl: null, //массив картинок
+                    from: null // в каком блоке
                 }
             }
         },
         methods: {
+            openModal() {
+                this.flagModalTsk = true;
+                let context = this;
+                let promEl = new Promise(function (res, rej)  {
+                    res(document.getElementsByClassName('report-form'))
+                });
+                promEl
+                    .then(result => {
+                        let el = result[0];
+                        result[0].remove();
+                        document.body.append(el)
+                    })
+                    .catch(err => alert('ошибка'))
+            },
             // метод закрытия модлки информационной, отправка родителю
             closeModal() {
-                this.$emit('modalClose')
+                this.flagModalTsk = false
+                // this.$emit('modalClose')
             },
+            // Обработка клика выбора фотографии
             openPhotoParent(data) {
-                this.$emit('openPhoto', data)
+                this.dataSlider.from = data.type;
+                this.dataSlider.page = this.dataReportForm.snapshots[data.type].length - 1;
+                this.dataSlider.arrayUrl = this.dataReportForm.snapshots[data.type].slice().map(el => el.url);
+                this.dataReportForm.snapshots[data.type].forEach((el, i) => el.url === data.url ? this.dataSlider.activePage = i : '');
+                this.flagModalTsk = false;
+                this.flagModalSlider = true;
             },
             exitKey(e) {
                 if (e.key === 'Escape') this.closeModal()
-            }
+            },
+            // функция получения данных
+            async getData() {
+                await Axios.get(this.link)
+                    .then(res => {
+                        for (let i in res.data.images) {
+                            console.log(i)
+                            if (res.data.images[i]['by_supervisor'] === '0') {
+                                this.dataReportForm.snapshots.executor.push(res.data.images[i])
+                            } else if (res.data.images[i]['by_supervisor'] === '1') {
+                                this.dataReportForm.snapshots.author.push(res.data.images[i])
+                            }
+                        }
+                        this.dataReportForm.task = {
+                            description: res.data.name,
+                            status: res.data.state,
+                            dateStaging: res.data.date_event,
+                            dateFulfillment: res.data.date,
+                            dateCompletion: res.data.date_final,
+                            valuationForm: res.data.competence,
+                            author: res.data.superFio, // авторы задачи
+                            executorTask: res.data.userFio, //исполнитель задачи
+                            levelOneUnit: res.data.topDepartment, // подразделение 1гшо уровня
+                            executiveDivision: res.data.department,//Подразделение испольнителя
+                        };
+                        this.dataReportForm.comment = {
+                            author: res.data.comment_supervisor,
+                            executor: res.data.comment_user
+                        }
+                    })
+                    .catch(err => console.log(err))
+            },
+            // обработка фоток
+            closeModalSliderParent() {
+                this.flagModalTsk = true;
+                this.flagModalSlider = false;
+            },
         },
         mounted() {
             document.addEventListener('keydown', this.exitKey, false);
+            this.getData()
         },
         destroyed() {
             document.removeEventListener('keydown', this.exitKey, false);
@@ -112,13 +208,14 @@
   .report-form {
     width: 100%;
     height: 100%;
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     background: rgba(0, 0, 0, 0.3);
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 9999999999999999999;
 
     &__container {
       width: 80%;
@@ -403,6 +500,20 @@
     }
   }
 
+
+  .modal-danone-enter-active {
+    transition: all .1s ease;
+  }
+
+  .modal-danone-leave-active {
+    transition: all .1s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+  }
+
+  .modal-danone-enter, .modal-danone-leave-to {
+    transform: scale(0.7);
+    opacity: 0;
+  }
+
   @media (max-width: 1604px) {
     .report-form {
       &__container {
@@ -497,6 +608,7 @@
       &__container {
         width: 100%;
         height: 100%;
+
         &-task {
           &__description {
             height: auto;

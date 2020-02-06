@@ -5,7 +5,7 @@
         <div v-for="(el, i) in dataSlider.arrayUrl" :style="{backgroundImage: `url(${el})`}"></div>
       </div>
     </div>
-    <div class="modal-slider-next" @click="stepSlider('next')">
+    <div class="modal-slider-next" v-if="dataSlider.arrayUrl.length > 1" @click="stepSlider('next')">
       <svg width="12" height="20" viewBox="0 0 12 20" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path
           d="M0.707107 17.3229C0.316582 17.7134 0.316583 18.3466 0.707107 18.7371L1.06289 19.0929C1.45342 19.4834 2.08658 19.4834 2.47711 19.0929L11.67 9.9L2.47711 0.707107C2.08658 0.316583 1.45342 0.316582 1.06289 0.707107L0.707107 1.06289C0.316582 1.45342 0.316583 2.08658 0.707107 2.47711L8.13 9.9L0.707107 17.3229Z"
@@ -13,7 +13,7 @@
       </svg>
 
     </div>
-    <div class="modal-slider-back" @click="stepSlider('back')">
+    <div class="modal-slider-back" v-if="dataSlider.arrayUrl.length > 1" @click="stepSlider('back')">
       <svg width="12" height="20" viewBox="0 0 12 20" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path
           d="M11.2929 17.3229C11.6834 17.7134 11.6834 18.3466 11.2929 18.7371L10.9371 19.0929C10.5466 19.4834 9.91342 19.4834 9.52289 19.0929L0.33 9.9L9.52289 0.707107C9.91342 0.316583 10.5466 0.316582 10.9371 0.707107L11.2929 1.06289C11.6834 1.45342 11.6834 2.08658 11.2929 2.47711L3.87 9.9L11.2929 17.3229Z"

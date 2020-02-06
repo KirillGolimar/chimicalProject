@@ -11,7 +11,7 @@
         <div class="comment-table-body">
           <div class="comment-table-body-row" v-for="(el, i) in dataComment">
             <div class="comment-table-body-row__date"><span>{{ el.date }}</span></div>
-            <div class="comment-table-body-row__text"><span>{{ el.description }}</span></div>
+            <div class="comment-table-body-row__text"><span>{{ el.text }}</span></div>
           </div>
         </div>
       </div>
