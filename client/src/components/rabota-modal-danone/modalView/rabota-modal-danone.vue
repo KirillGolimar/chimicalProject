@@ -196,6 +196,7 @@
         },
         mounted() {
             document.addEventListener('keydown', this.exitKey, false);
+            this.getData()
         },
         destroyed() {
             document.removeEventListener('keydown', this.exitKey, false);
