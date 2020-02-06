@@ -682,4 +682,18 @@
       }
     }
   }
+
+
+  .modal-danone-enter-active {
+    transition: all .1s ease;
+  }
+
+  .modal-danone-leave-active {
+    transition: all .1s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+  }
+
+  .modal-danone-enter, .modal-danone-leave-to {
+    transform: scale(0.7);
+    opacity: 0;
+  }
 </style>
