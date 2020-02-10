@@ -67,7 +67,7 @@
 
     <modal-view
       v-if="flagModalView"
-      :data-file="dataOpenFile"
+      :files="allFilesNesting"
       @closeModalView="flagModalView = false"
     />
 
@@ -151,6 +151,15 @@
              */
             lengthArrNewFile() {
                 if (this.newFiles) return this.newFiles.length > 0
+            },
+            // информация по всем элементам на данном уровне вложенности и инфа для навигации
+            allFilesNesting() {
+                let filesEmptyFolder = this.nestingArray[this.nestingArray.length - 1].filter(el => el.type !== 'folder');
+                return {
+                    files: filesEmptyFolder,
+                    length: filesEmptyFolder.length,
+                    activeFile: filesEmptyFolder.findIndex(el => el.fullAddress === this.dataOpenFile.fullAddress)
+                }
             }
         },
         data() {
@@ -167,7 +176,7 @@
                 newFiles: [],
                 activeUrl: '',
                 flagModalView: false, // флаг модального окна просмотров
-                dataOpenFile: '' // поля дял записи файла который открываем
+                dataOpenFile: '' // поля для записи файла который открываем
             }
         },
         watch: {
@@ -180,6 +189,9 @@
                     this.activeUrl += `/${data[data.length - 1]}`
                 }
 
+            },
+            nestingArray(data) {
+                console.log(data[data.length - 1])
             }
         },
         methods: {

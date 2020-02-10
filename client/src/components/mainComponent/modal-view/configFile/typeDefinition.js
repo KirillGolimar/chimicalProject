@@ -7,7 +7,7 @@ function type (typeFile) {
   for(let typ in typeModule) {
     if(typeModule[typ].includes(typeFile)) {
       return typ
-    }
+    } else return typeFile
   }
 }
 

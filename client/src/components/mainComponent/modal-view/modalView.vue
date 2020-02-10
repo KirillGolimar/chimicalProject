@@ -1,5 +1,5 @@
 <template>
-  <div class="modal-view" >
+  <div class="modal-view">
     <div class="modal-view__settings" @mouseenter="flagActions = true" @mouseleave="flagActions = false">
       <div class="actions-icon" v-if="!flagActions">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -22,15 +22,16 @@
             :fill="styleActions"/>
         </svg>
       </div>
-      <a :href="downloadImageUrl" :download="downloadImageUrl" v-if="flagActions" class="modal-view__settings-download actions-icons">
+      <a :href="downloadImageUrl" :download="downloadImageUrl" v-if="flagActions"
+         class="modal-view__settings-download actions-icons">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M5.01562 18H18.9844V20.0156H5.01562V18ZM18.9844 9L12 15.9844L5.01562 9H9V3H15V9H18.9844Z" :fill="styleActions"/>
+          <path d="M5.01562 18H18.9844V20.0156H5.01562V18ZM18.9844 9L12 15.9844L5.01562 9H9V3H15V9H18.9844Z"
+                :fill="styleActions"/>
         </svg>
       </a>
     </div>
-    <div class="modal-view__title">
-      <span>{{ typeFile }}</span>
-      <span>{{ dataFile.title }}</span>
+    <div class="modal-view__title" v-if="actionFile && actionFile.title">
+      <span>{{ actionFile.title }}</span>
     </div>
     <div class="modal-view__actions" v-if="flagDisplayNavigation">
       <div class="modal-view__actions-next"></div>
@@ -40,9 +41,17 @@
       <div class="modal-view__container-loader">
         <open-file-loader v-if="flagDownloaderFile"/>
       </div>
-      <div class="modal-view__container-block">
+      <div class="modal-view__container-block" v-if="actionFile && typeFile && urlImage">
         <img :src="urlImage" alt="" v-if="typeFile === 'image'">
-<!--        Думаю открывать все осталбные файлы можно и в новой вкладкее браузера ибо не придумывать велосипед -->
+        <!--        Думаю открывать все осталбные файлы можно и в новой вкладкее браузера ибо не придумывать велосипед -->
+      </div>
+    </div>
+    <div class="modal-view__navigation" v-if="files.length > 1">
+      <div class="modal-view__navigation-next" @click="navigationFiles('next')">
+        <arrow fill="#FFFFFF"/>
+      </div>
+      <div class="modal-view__navigation-back" @click="navigationFiles('back')">
+        <arrow fill="#FFFFFF"/>
       </div>
     </div>
   </div>
@@ -55,15 +64,17 @@
 
     const server = require('./../../../config/client/client').server;
     import Axios from 'axios'
+    import Arrow from "../../icon/arrow";
 
     export default {
         /**
          * компонент общий контайнер для просмотра файлов
          */
         name: "modalView",
-        components: {OpenFileLoader},
+        components: {Arrow, OpenFileLoader},
         props: {
-            dataFile: {
+            // информация по сестринчким элементам и данные по навигации на данной сложенности
+            files: {
                 type: Object,
                 default: () => {
                 }
@@ -71,11 +82,12 @@
         },
         data() {
             return {
-                flagActions: true,
+                flagActions: false,
                 flagBigSize: false, // флаг отечает за размер просмотра контента
                 flagDisplayNavigation: false, // флаг отвечает за отображение блока переключения между файлоами
                 flagDownloaderFile: false, // флаг отвечает за загрузку файла
-                dataFileInServer: null // файл с сервера
+                dataFileInServer: null, // файл с сервера
+                activeFileCount: this.files.activeFile || 0 // актиынй файл
             }
         },
         computed: {
@@ -87,14 +99,19 @@
                 return this.flagBigSize ? '#ffffff' : '#666666';
             },
             urlImage() {
-                return server + this.dataFile.fullAddress.replace('./static/', 'public/')
+                return server + this.actionFile.fullAddress.replace('./static/', 'public/')
             },
             typeFile() {
-                return typeDefinition(this.dataFile.type)
+                return typeDefinition(this.actionFile.type)
             },
             downloadImageUrl() {
-                return `${server}${this.dataFile.fullAddress.replace('./static/', 'public/')}`
-            }
+                return `${server}${this.actionFile.fullAddress.replace('./static/', 'public/')}`
+            },
+            // возврат активного файла
+            actionFile() {
+               return this.files.files[this.activeFileCount]
+            },
+
         },
         methods: {
             // закрытие модалки просмотра
@@ -104,16 +121,15 @@
             sizeModalView() {
                 this.flagBigSize = !this.flagBigSize
             },
-
             async downloadFile() {
-              await Axios.get(`${server}download?url=${this.dataFile.fullAddress.replace('./static/', 'public/')}`)
-                  .then(res => console.log(res))
-                  .catch(err=> console.log(err))
+                await Axios.get(`${server}download?url=${this.actionFile.fullAddress.replace('./static/', 'public/')}`)
+                    .then(res => console.log(res))
+                    .catch(err => console.log(err))
             },
             // загрузка файла
             async openFile() {
                 this.flagDownloaderFile = true;
-                await Axios.get(`${server}${this.dataFile.fullAddress.replace('./static/', '')}`)
+                await Axios.get(`${server}${this.actionFile.fullAddress.replace('./static/', '')}`)
                     .then(res => {
                         this.dataFileInServer = res.data; // запись данных с сервера при открытии файла
                     })
@@ -122,18 +138,44 @@
             },
             async openFilePdf() {
                 this.flagDownloaderFile = true;
-                await Axios.get(`${server}open/?url=${this.dataFile.fullAddress.replace('./static/', '')}`)
+                await Axios.get(`${server}open/?url=${this.actionFile.fullAddress.replace('./static/', '')}`)
                     .then(res => {
-                        console.log(res.data);
-                    this.dataFileInServer = res.data; // запись данных с сервера при открытии файла
-                })
+                        this.dataFileInServer = res.data; // запись данных с сервера при открытии файла
+                    })
                     .catch(err => console.log(err))
                     .finally(() => this.flagDownloaderFile = false)
             },
+            /**
+             * метод слежения за клавишами
+             */
+            eventKey(e) {
+                if (e.key.toLowerCase() === 'escape'.toLowerCase()) {
+                    this.closeModalView()
+                }
+                else if(e.key.toLowerCase() === 'ArrowRight'.toLowerCase()) this.navigationFiles('next');
+                else if(e.key.toLowerCase() === 'ArrowLeft'.toLowerCase()) this.navigationFiles('back');
+            },
+
+            // ПЕРЕКЛЮЧЕНИЕ файлов
+            /**
+             * метод перехода между файлами
+             * @param type - тип перехода (впередБ назад )
+             */
+            navigationFiles(type) {
+                if (type === 'next') {
+                    this.activeFileCount < this.files.files.length - 1 ? this.activeFileCount++ : this.activeFileCount = 0
+                } else if (type === 'back') {
+                    this.activeFileCount === 0 ? this.activeFileCount = this.files.files.length - 1 : this.activeFileCount--
+                }
+            }
         },
         mounted() {
-            if(this.dataFile.type === '.pdf') this.openFilePdf();
+            document.addEventListener('keydown', this.eventKey, false);
+            if (this.actionFile.type === '.pdf') this.openFilePdf();
             else this.openFile()
+        },
+        beforeDestroy() {
+            document.removeEventListener('keydown', this.eventKey, false);
         }
     }
 </script>
@@ -233,9 +275,34 @@
         display: flex;
         justify-content: center;
         align-items: center;
+
         > img {
           height: 100%;
         }
+      }
+    }
+
+    &__navigation {
+      > div {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: rgba(0, 0, 0, 0.3);
+        position: absolute;
+        top: calc(50% - 20px);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+      }
+
+      &-next {
+        right: 2em;
+      }
+
+      &-back {
+        left: 2em;
+        transform: rotate(180deg);
       }
     }
 
