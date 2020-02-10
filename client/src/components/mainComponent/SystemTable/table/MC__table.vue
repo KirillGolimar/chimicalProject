@@ -437,7 +437,6 @@
         document.removeEventListener('keydown', this.filterHotKey, false)
       },
       filterHotKey(e) {
-        console.log('qweqwe')
         if (e.key.toLowerCase() === 'f' && !this.focusFilter ||
           e.key.toLowerCase() === 'а' && !this.focusFilter) {
           this.activeFilters = !this.activeFilters;

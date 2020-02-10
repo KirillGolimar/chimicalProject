@@ -3,7 +3,8 @@ import Vue from 'vue'
 const state = {
   search: {
     administration: {},
-    support: {}
+    support: {},
+    testingAll: {}
   }
 };
 const getters = {
@@ -13,7 +14,6 @@ const getters = {
 };
 const mutations = {
   set_search: (state, data) => {
-    console.log(state.search[data.name])
     Vue.set(state.search[data.name], data.title, data.text)
   }
 };

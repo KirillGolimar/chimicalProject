@@ -5,7 +5,7 @@
         :number-row="15"
         :settings-actions-table="true"
         :checked-active="true"
-        :title-table="'tesstingsAll'"
+        :title-table="'testingAll'"
         :settings="[_('delete'),_('view')]"
         @actionsTable="actionsTableParent"
         @changeRow="changeRowParent"
