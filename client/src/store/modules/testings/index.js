@@ -95,6 +95,11 @@ const mutations = {
   // метод записи всех тестов
   add_allTest: (state, data) => {
     state.allTest = data
+  },
+
+  // записываю все полученные тесты с сервера
+  set_allTest: (state, data) => {
+    state.allTest = data
   }
 
 };
@@ -257,6 +262,21 @@ const actions = {
     await Axios.post('http://localhost:8081/testings/new/test', data).then(res => {
       state.commit('add_allTest', res.data)
     }).catch(err => console.log(err))
+  },
+
+  /**
+   * запрос на все тесты для пользователя (или все тесты)
+   * @param state
+   * @param data
+   * @returns {Promise<void>}
+   * @constructor
+   */
+  GET_AllTest: async (state, data) => {
+    await Axios.get(`http://localhost:8081/testings/all?user=1`)
+      .then(res=> {
+          state.commit('set_allTest', res.data.tests)
+      })
+      .catch(err=> console.log(err))
   }
 
 

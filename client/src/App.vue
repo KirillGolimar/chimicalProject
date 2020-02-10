@@ -1,5 +1,6 @@
 <template>
-  <testings />
+<!--  <testings />-->
+  <all-test />
 <!--  <div id="app" @click="closeModal">-->
 <!--    <div class="block-alert">-->
 <!--      <Cm__alert-->
@@ -73,10 +74,12 @@
   import Home from "./components/authRouter/home/home";
   import FileView from "./components/mainComponent/modal-view/fileView/fileView";
   import Testings from "./components/testings/newTest/testings";
+  import AllTest from "./components/testings/allTest/allTest";
 
   export default {
     name: 'App',
     components: {
+        AllTest,
         Testings,
         FileView,
         Home,

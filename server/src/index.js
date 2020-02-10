@@ -23,7 +23,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 app.use(fileUlpoad());
-app.use( '/public',express.static('./static'));
+app.use('/public', express.static('./static'));
 
 const poll = mysql.createPool(config.dataBase).promise();
 
@@ -34,7 +34,6 @@ app.get('/', (req, res) => {
         cardInfo: cardInfo.cardInfo
     })
 });
-
 
 
 /**
@@ -220,7 +219,7 @@ app.get('/open/', function (req, res) {
 /*
 метод обработки загрузки файла
  */
-app.get('/download', (req,res) => {
+app.get('/download', (req, res) => {
     require('./fileStorage/download')(req.query.url, res)
 });
 
@@ -228,7 +227,6 @@ app.get('/download', (req,res) => {
 /**
  * обработка отдачи статических файлов
  */
-
 
 
 ///////////////////////////////////////////////////////////////////////// МЕТОДЫ РАБОТЫ МОДУЛЕЙ П ОТЕХНИЧЕСКОЙ ПОДДЕРЖКЕ
@@ -464,6 +462,25 @@ const testQuest = [
     },
 ];
 
+
+// массив доступных тестов
+const tests = [
+    {
+        id: 2048,
+        nameTest: "Тест по химии",
+        settings: {assessment: "", time: {flag: true, time: "12:12"}},
+        questId: [1, 2],
+    },
+    {
+        id: 2049,
+        nameTest: "Тест по химии № 2",
+        settings: {assessment: "", time: {flag: false, time: "12:12"}},
+        questId: [1, 2],
+    }
+];
+
+
+
 /**
  * класс по созданию нового теста
  */
@@ -487,23 +504,6 @@ class NewTest {
     }
 
 }
-
-// массив доступных тестов
-const tests = [
-    {
-        id: 2048, nameTest: "Тест по химии", settings: {assessment: "", time: {flag: true, time: "12:12"}},
-        id: 2048,
-        nameTest: "Тест по химии",
-        settings: {assessment: "", time: {flag: true, time: "12:12"}},
-        assessment: "",
-        time: {flag: true, time: "12:12"},
-        flag: true,
-        time: "12:12",
-        questId: [1, 2],
-        0: 1,
-        1: 2,
-    }
-];
 
 app.get('/answers/all', (req, res) => {
     //Подготовка объекта по группам классификаторов и клиссификаторов
@@ -664,6 +664,13 @@ app.post('/testings/new/test', (req, res) => {
     let test = new NewTest(req.body.nameTest, req.body.settings, req.body.quest);
     tests.push(test.resultNewTest())
     res.send(tests)
+});
+
+/**
+ * запрос на все тесты
+ */
+app.get('/testings/all', (req,res) => {
+    res.send({tests: tests})
 })
 
 
@@ -801,14 +808,20 @@ app.post('/widgets/active/reordering', (req, res) => {
 
 
 app.get('/widgets/active/role', (req, res) => {
-    let activeWidgetsInRole = activeWidgetsRole.find(el=> el.role === req.query.role).activeWidget;
+    let activeWidgetsInRole = activeWidgetsRole.find(el => el.role === req.query.role).activeWidget;
     // тестовые данные по виджету
     let testData = [
-        {title:'карточка 1 1 3211 1 321 32132 123 1321 321 32',description:'какое то описание 1 какое то описание 1 какое то описание 1 какое то описание 1 какое то описание 1 какое то описание 1',img:'123123', link:'asdasdasd', modification:'new'},
-        {title:'карточка 2',description:'какое то описание 2',img:'', link:'', modification:''},
-        {title:'карточка 3',description:'какое то описание 3',img:'', link:'', modification:''},
-        {title:'карточка 4',description:'какое то описание 4',img:'', link:'', modification:''},
-        {title:'карточка 5',description:'какое то описание 5',img:'', link:'', modification:''},
+        {
+            title: 'карточка 1 1 3211 1 321 32132 123 1321 321 32',
+            description: 'какое то описание 1 какое то описание 1 какое то описание 1 какое то описание 1 какое то описание 1 какое то описание 1',
+            img: '123123',
+            link: 'asdasdasd',
+            modification: 'new'
+        },
+        {title: 'карточка 2', description: 'какое то описание 2', img: '', link: '', modification: ''},
+        {title: 'карточка 3', description: 'какое то описание 3', img: '', link: '', modification: ''},
+        {title: 'карточка 4', description: 'какое то описание 4', img: '', link: '', modification: ''},
+        {title: 'карточка 5', description: 'какое то описание 5', img: '', link: '', modification: ''},
     ]
     activeWidgetsInRole.map(el => el['data'] = testData)
     res.send({widgets: activeWidgetsInRole})
@@ -819,39 +832,17 @@ app.get('/widgets/active/role', (req, res) => {
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-
-
-
-
 //////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////
 // РАБОТА С ФАЙЛАМИ ( СОХРАНЕНИЕ фоток, ФАЙЛОВ)
 //////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////
 
-app.post('/files/add' , (req,res) => {
+app.post('/files/add', (req, res) => {
     setTimeout(() => {
         res.send('qwe')
     }, 3000)
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 app.listen(config.port, () => {

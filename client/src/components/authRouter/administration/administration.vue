@@ -73,7 +73,7 @@
               }
             }
           })
-        })
+        });
         return testArr
       },
       idForm() {
@@ -118,12 +118,12 @@
           this.dataUsers = []
         }
         if (!data.value) {
-          this.dataUsers.splice(this.dataUsers.findIndex(el => el === data.id), 1)
+          this.dataUsers.splice(this.dataUsers.findIndex(el => el === data.id), 1);
           if (this.dataUsers.length === 0) {
             this.flagUsers = false
           }
         } else {
-          this.dataUsers.push(data.id)
+          this.dataUsers.push(data.id);
           this.flagUsers = true
         }
       },

@@ -1,12 +1,14 @@
 <template>
+<!--  background: themeActiveComp.workspaceBackground.background-->
+<!--  :style="{color:  themeActiveComp.workspaceBackground.color}"-->
   <div
     id="dropDownMenu"
-    :style="{left:position.x, top:position.y, background: themeActiveComp.workspaceBackground.background}">
+    :style="{left:position.x, top:position.y}">
     <div
       v-for="action in settings"
       @click="actionsDDM($event, action)"
     >
-      <span :style="{color:  themeActiveComp.workspaceBackground.color}">{{ action }}</span>
+      <span >{{ _(action) }}</span>
     </div>
   </div>
 </template>
