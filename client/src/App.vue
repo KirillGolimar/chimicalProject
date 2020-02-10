@@ -1,42 +1,43 @@
 <template>
-  <div id="app" @click="closeModal">
-    <div class="block-alert">
-      <Cm__alert
-        v-for="(item, i ) in GETARRAYMESSAGE"
-        :dataMessage="item"
-        :key="`alert-${i}`"
-        :keyAlert="i"
-        :class="`alert-${i}`"
-        @deleteAlert="deleteAlertParrent"
-      />
-    </div>
-    <dropdown-menu/>
-    <loader
-      v-if="LOADER"
-    />
-    <transition name="loaderMessage">
-      <loader-message v-if="getLoaderMessage"/>
-    </transition>
-    <support v-if="testTODOS"/>
-    <div v-if="!testTODOS">
-      <cm__header
-        :dataHeader="dataHeader"
-        @typeAuth="authorizationHeader"
-      />
-      <div id="noUser">
-        <unauthorized
-          v-if="!loader"
-          :typeAuth="authorization"
-          :dataInfo="dataInfo"
-          :cardTestings="cardTestings"
-          @registerUser="registerTrueInHome"
-        />
-      </div>
-    </div>
-    <div v-if="testTODOS">
-      <app__auth-users/>
-    </div>
-  </div>
+  <testings />
+<!--  <div id="app" @click="closeModal">-->
+<!--    <div class="block-alert">-->
+<!--      <Cm__alert-->
+<!--        v-for="(item, i ) in GETARRAYMESSAGE"-->
+<!--        :dataMessage="item"-->
+<!--        :key="`alert-${i}`"-->
+<!--        :keyAlert="i"-->
+<!--        :class="`alert-${i}`"-->
+<!--        @deleteAlert="deleteAlertParrent"-->
+<!--      />-->
+<!--    </div>-->
+<!--    <dropdown-menu/>-->
+<!--    <loader-->
+<!--      v-if="LOADER"-->
+<!--    />-->
+<!--    <transition name="loaderMessage">-->
+<!--      <loader-message v-if="getLoaderMessage"/>-->
+<!--    </transition>-->
+<!--    <support v-if="testTODOS"/>-->
+<!--    <div v-if="!testTODOS">-->
+<!--      <cm__header-->
+<!--        :dataHeader="dataHeader"-->
+<!--        @typeAuth="authorizationHeader"-->
+<!--      />-->
+<!--      <div id="noUser">-->
+<!--        <unauthorized-->
+<!--          v-if="!loader"-->
+<!--          :typeAuth="authorization"-->
+<!--          :dataInfo="dataInfo"-->
+<!--          :cardTestings="cardTestings"-->
+<!--          @registerUser="registerTrueInHome"-->
+<!--        />-->
+<!--      </div>-->
+<!--    </div>-->
+<!--    <div v-if="testTODOS">-->
+<!--      <app__auth-users/>-->
+<!--    </div>-->
+<!--  </div>-->
 </template>
 
 <script>
@@ -71,10 +72,12 @@
   import SettingsWidget from "./components/authRouter/settings/settings-widgets/settingsWidget";
   import Home from "./components/authRouter/home/home";
   import FileView from "./components/mainComponent/modal-view/fileView/fileView";
+  import Testings from "./components/testings/newTest/testings";
 
   export default {
     name: 'App',
     components: {
+        Testings,
         FileView,
         Home,
         SettingsWidget,
