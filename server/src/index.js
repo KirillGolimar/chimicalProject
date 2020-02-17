@@ -84,35 +84,37 @@ app.post('/lsAuthorization', (req, res) => {
 //                                          ПРОВЕРКА ДОСТУПА                                                          //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //ORGANIZATION
-app.get('/:id/wiki/organization', function (req, res) {
-    console.log(req.query)
-    const storageFile = require('./permissionsAndGetters/wikiOrganization');
-    storageFile('/:id/wiki/organization', req.query.login, req.query.pass, res)
-});
-
-//LIST USERS
-app.get('/:id/wiki/usefulLinks', function (req, res) {
-    console.log(req.query)
-    const storageFile = require('./permissionsAndGetters/wikiUserFullLinks');
-    storageFile('/:id/wiki/usefulLinks', req.query.login, req.query.pass, res)
-});
-
-//Innovations
-app.get('/:id/wiki/innovation', function (req, res) {
-    console.log(req.query)
-    const innovation = require('./permissionsAndGetters/wikiInnovation')
-    innovation('/:id/wiki/usefulLinks', req.query.login, req.query.pass, res)
-});
+// app.get('/:id/wiki/organization', function (req, res) {
+//     console.log(req.query)
+//     console.log('cnexbvcz')
+//     const storageFile = require('./permissionsAndGetters/wikiOrganization');
+//     storageFile('/:id/wiki/organization', req.query.login, req.query.pass, res)
+// });
+//
+// //LIST USERS
+// app.get('/:id/wiki/usefulLinks', function (req, res) {
+//     console.log(req.query)
+//     const storageFile = require('./permissionsAndGetters/wikiUserFullLinks');
+//     storageFile('/:id/wiki/usefulLinks', req.query.login, req.query.pass, res)
+// });
+//
+// //Innovations
+// app.get('/:id/wiki/innovation', function (req, res) {
+//     console.log(req.query)
+//     const innovation = require('./permissionsAndGetters/wikiInnovation')
+//     innovation('/:id/wiki/usefulLinks', req.query.login, req.query.pass, res)
+// });
 
 // app.get('/:id/wiki', (req, res) => {
 //     const storageFile = require('./permissionsAndGetters/wikiUserFullLinks')
 //     storageFile('/:id/wiki/usefulLinks',req.query.login, req.query.pass, res)
 // })
 
-app.get('/:id/settings/theme', (req, res) => {
-    const getSettingsTheme = require('./permissionsAndGetters/settingsTheme')
-    getSettingsTheme('/:id/settings/theme', req.query.login, req.query.pass, res)
-});
+// app.get('/:id/settings/theme', (req, res) => {
+//     console.log('hello')
+//     const getSettingsTheme = require('./permissionsAndGetters/settingsTheme')
+//     getSettingsTheme('/:id/settings/theme', req.query.login, req.query.pass, res)
+// });
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 app.get('/:id/administration', (req, res) => {
@@ -120,14 +122,16 @@ app.get('/:id/administration', (req, res) => {
     getAdministration('/:id/administration', req.query.login, req.query.pass, res)
 });
 
-app.get('/:id/storageFile', (req, res) => {
-    const storageFile = require('./permissionsAndGetters/storageFile')
-    storageFile('/:id/storageFile', req.query.login, req.query.pass, res)
-});
+//////////////////////////*********************************
+const routingModules = require('./routing/index');
+for(let i in routingModules) {
+    app.use(i, routingModules[i])
+}
+//////////////////////////**********************************
 
 app.get('/:id/support', (req, res) => {
-    const storageFile = require('./permissionsAndGetters/supportTable')
-    storageFile('/:id/support', req.query.login, req.query.pass, res)
+    const support = require('./permissionsAndGetters/supportTable');
+    support('/:id/support', req.query.login, req.query.pass, res)
 });
 
 //****************++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ ТЕСТЫ
@@ -174,7 +178,7 @@ app.get('/reset/paswword/all', (req, res) => {
 
 app.get('/generation', (req, res) => {
     require('./moduleAdminka/generationUsers')(poll, res, req.query.counter)
-})
+});
 
 
 /***
@@ -182,32 +186,32 @@ app.get('/generation', (req, res) => {
  */
 
 //удаление файлов ( папок )
-app.del('/:id/storageFile/delete', function (req, res) {
-    const fileStorageDelete = require('./fileStorage/deleteFile/deleteFile');
-    fileStorageDelete(req.query.url, res)
-});
+// app.del('/:id/storageFile/delete', function (req, res) {
+//     const fileStorageDelete = require('./fileStorage/deleteFile/deleteFile');
+//     fileStorageDelete(req.query.url, res)
+// });
 
 //изменение имени файла
-app.post('/:id/fileStorage/change', function (req, res) {
-    const changeName = require('./fileStorage/changeFile/changeNameFile')
-    changeName(req.body, res)
-});
+// app.post('/:id/fileStorage/change', function (req, res) {
+//     const changeName = require('./fileStorage/changeFile/changeNameFile')
+//     changeName(req.body, res)
+// });
 
 /**
  * метод добавления новых файлов на вервер
  */
-app.post('/:id/fileStorage/addFiles', function (req, res) {
-    const fileStorageAddFiles = require('./fileStorage/addFiles/addFiles');
-    if (req.files && req.files.file) {
-        fileStorageAddFiles(req.files.file, req.body.url, res)
-    } else {
-        res.send({
-            typeMessage: 'error',
-            status: false,
-            message: 'пустый файлы загружать нельзя'
-        })
-    }
-});
+// app.post('/:id/fileStorage/addFiles', function (req, res) {
+//     const fileStorageAddFiles = require('./fileStorage/addFiles/addFiles');
+//     if (req.files && req.files.file) {
+//         fileStorageAddFiles(req.files.file, req.body.url, res)
+//     } else {
+//         res.send({
+//             typeMessage: 'error',
+//             status: false,
+//             message: 'пустый файлы загружать нельзя'
+//         })
+//     }
+// });
 
 /**
  * МЕТОД ОБРАБОТКИ ОТКРЫТИЯ ФАЙЛА С ХРАНИЛИЩА
@@ -242,9 +246,9 @@ app.post('/:id/support/addMessage', function (req, res) {
     addMessageSupport(req.body, res)
 });
 
-app.get('/change/status/table', (req, res) => {
-    require('./mainMethods/tableMethods/changeStatusTable')(req.query, res)
-})
+// app.get('/change/status/table', (req, res) => {
+//     require('./mainMethods/tableMethods/changeStatusTable')(req.query, res)
+// })
 
 
 ///////////////////////////////////////////////////////////////// МЕТОДЫ РАБОТЫ МОДУЛЕЙ СЕРВИСОВ
@@ -259,148 +263,148 @@ app.get('/change/status/table', (req, res) => {
 /**
  * метод удаления строк из БД
  */
-app.del('/removeFromTable', function (req, res) {
-    const dbUsersDelete = require('./mainMethods/deleteData/deleteFromTable')
-    dbUsersDelete(req.query, res)
-});
+// app.del('/removeFromTable', function (req, res) {
+//     const dbUsersDelete = require('./mainMethods/deleteData/deleteFromTable');
+//     dbUsersDelete(req.query, res)
+// });
 
 /**
  * метод отправки сообщения
  */
-app.post('/addMessage', function (req, res) {
-    const addMessageInUser = require('./mainMethods/addMessage/addMEssage')
-    addMessageInUser(req.body, res)
-    // res.send({status:true, message:'сообщение отправлено',typeMessage:'success'})
-})
+// app.post('/addMessage', function (req, res) {
+//     const addMessageInUser = require('./mainMethods/addMessage/addMEssage')
+//     addMessageInUser(req.body, res)
+//     // res.send({status:true, message:'сообщение отправлено',typeMessage:'success'})
+// })
 
-/**
- * общий метод отправки письма
- * отправляет внутри системы или на поту
- * возможность отправки нескольким адресатам
- */
-app.post('/message/new', function (req, res) {
-    if (req.body.typeMessage === 'system') {
-        require('./mainMethods/addMessage/letterSendingSystem')(req.body, res)
-    } else if (req.body.typeMessage === 'mail') {
-        require('./mainMethods/addMessage/letterSendingMail')(req.body, res)
-    }
-});
+// /**
+//  * общий метод отправки письма
+//  * отправляет внутри системы или на поту
+//  * возможность отправки нескольким адресатам
+//  */
+// app.post('/message/new', function (req, res) {
+//     if (req.body.typeMessage === 'system') {
+//         require('./mainMethods/addMessage/letterSendingSystem')(req.body, res)
+//     } else if (req.body.typeMessage === 'mail') {
+//         require('./mainMethods/addMessage/letterSendingMail')(req.body, res)
+//     }
+// });
 
 
 /**
  * метод получения всех сообщений для пользователя
  */
 
-app.get('/getMessage', (req, res) => {
-    const getAllMessage = require('./mainMethods/messageInUser/getMessage')
-    getAllMessage(req.query.id, res)
-})
-/**
- * метод прочитывания сообщения
- */
-app.get('/statusMessage', (req, res) => {
-    const readMessage = require('./mainMethods/readMessage/readMessage')
-    readMessage(req.query.id, res)
-})
+// app.get('/getMessage', (req, res) => {
+//     const getAllMessage = require('./mainMethods/messageInUser/getMessage');
+//     getAllMessage(req.query.id, res)
+// });
+// /**
+//  * метод прочитывания сообщения
+//  */
+// app.get('/statusMessage', (req, res) => {
+//     const readMessage = require('./mainMethods/readMessage/readMessage');
+//     readMessage(req.query.id, res)
+// });
 
 
 //////////////////////////////////////////////// МЕТОДЫ ПО СЛАЙДЕРУ КАЛЕНДАРЬ
 
-//Записывание нового пользовательского события
-app.post('/calendar/user/newEvent', (req, res) => {
-    const addNewEvent = require('./switch/сalendar/addNewEvent')
-    addNewEvent(req.body, res)
-})
+// //Записывание нового пользовательского события
+// app.post('/calendar/user/newEvent', (req, res) => {
+//     const addNewEvent = require('./switch/сalendar/addNewEvent');
+//     addNewEvent(req.body, res)
+// });
 
-/**
- * метод получения всех событий по календарю для пользователя
- */
+// /**
+//  * метод получения всех событий по календарю для пользователя
+//  */
+//
+// app.get('/calendar/getEvents', (req, res) => {
+//     const getEventsUser = require('./switch/сalendar/getEventsUser');
+//     getEventsUser(req.query.id, res)
+// })
 
-app.get('/getEvents/calendar', (req, res) => {
-    const getEventsUser = require('./switch/сalendar/getEventsUser')
-    getEventsUser(req.query.id, res)
-})
+// // метод вкл/выкл оповещения
+// app.post('/calendar/user/changeEvent', (req, res) => {
+//     const changeReminder = require('./switch/сalendar/changeReminder')
+//     changeReminder(req.body, res)
+// })
 
-// метод вкл/выкл оповещения
-app.post('/calendar/user/changeEvent', (req, res) => {
-    const changeReminder = require('./switch/сalendar/changeReminder')
-    changeReminder(req.body, res)
-})
-
-// метод выполнено/невыполнено событие
-app.post('/calendar/user/doneEvent', (req, res) => {
-    const doneEvent = require('./switch/сalendar/doneEvent')
-    doneEvent(req.body, res)
-})
-
-// метод удаления события пользователя
-app.post('/calendar/user/deleteEvents', (req, res) => {
-    const deleteEvent = require('./switch/сalendar/deleteEvent')
-    deleteEvent(req.body, res)
-})
+// // метод выполнено/невыполнено событие
+// app.post('/calendar/user/doneEvent', (req, res) => {
+//     const doneEvent = require('./switch/сalendar/doneEvent')
+//     doneEvent(req.body, res)
+// })
+//
+// // метод удаления события пользователя
+// app.post('/calendar/user/deleteEvents', (req, res) => {
+//     const deleteEvent = require('./switch/сalendar/deleteEvent')
+//     deleteEvent(req.body, res)
+// })
 
 
 ////////////////////////////////////////////////////////////////// Методы по работе с блоком насттроек !!!!
 
-///// Методы по работе с оформлением ( темы )
-app.post('/settings/theme/saveTheme', (req, res) => {
-    const newTheme = require('./settings/theme/newTheme')
-    newTheme(req.body, res)
-})
+// ///// Методы по работе с оформлением ( темы )
+// app.post('/settings/theme/saveTheme', (req, res) => {
+//     const newTheme = require('./settings/theme/newTheme')
+//     newTheme(req.body, res)
+// })
 
 /**
  * метод по возврату всех доступных тем
  */
-app.get('/settings/theme/allTheme', (req, res) => {
-    const allTheme = require('./settings/theme/allTheme')
-    allTheme(res)
-})
+// app.get('/settings/theme/allTheme', (req, res) => {
+//     const allTheme = require('./settings/theme/allTheme')
+//     allTheme(res)
+// })
 
-/**
- * метод по запросу на актинвые темы
- */
-app.get('/settings/theme/activeTheme', (req, res) => {
-    const activeTheme = require('./settings/theme/getActiveTheme')
-    activeTheme(res)
-})
+// /**
+//  * метод по запросу на актинвые темы
+//  */
+// app.get('/settings/theme/activeTheme', (req, res) => {
+//     const activeTheme = require('./settings/theme/getActiveTheme')
+//     activeTheme(res)
+// })
 
 
 /**
  *  метод удаления темы
  */
 
-app.get('/settings/theme/deleteTheme', (req, res) => {
-    const deleteTheme = require('./settings/theme/deleteTheme')
-    deleteTheme(req.query.id, res)
-})
+// app.get('/settings/theme/deleteTheme', (req, res) => {
+//     const deleteTheme = require('./settings/theme/deleteTheme')
+//     deleteTheme(req.query.id, res)
+// })
 
 
 /**
  *  метод удаления активной темы
  */
 
-app.get('/settings/theme/delete/active', (req, res) => {
-    const deleteActiveTheme = require('./settings/theme/deleteActiveTheme')
-    deleteActiveTheme(req.query.id, res)
-})
+// app.get('/settings/theme/delete/active', (req, res) => {
+//     const deleteActiveTheme = require('./settings/theme/deleteActiveTheme')
+//     deleteActiveTheme(req.query.id, res)
+// })
 
-/**
- * метод имзенения темы
- */
-app.post('/settings/theme/edit', (req, res) => {
-    const editTheme = require('./settings/theme/editTheme')
-    editTheme({id: req.body.id, info: req.body.data}, res)
-})
+// /**
+//  * метод имзенения темы
+//  */
+// app.post('/settings/theme/edit', (req, res) => {
+//     const editTheme = require('./settings/theme/editTheme')
+//     editTheme({id: req.body.id, info: req.body.data}, res)
+// })
 
 
 /**
  * метод изменения дополнительной темы
  */
 
-app.get('/settings/theme/selectedTheme', (req, res) => {
-    const newACtiveTheme = require('./settings/theme/newActiveTheme')
-    newACtiveTheme(req.query.id, res)
-});
+// app.get('/settings/theme/selectedTheme', (req, res) => {
+//     const newACtiveTheme = require('./settings/theme/newActiveTheme')
+//     newACtiveTheme(req.query.id, res)
+// });
 
 
 /***********************************************************
